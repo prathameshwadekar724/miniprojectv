@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:orientation="vertical"
@@ -12,13 +13,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Volunteering"
+        android:text="Loading..."
+        android:id="@+id/fname"
+
         android:textSize="25sp"
         android:textColor="@color/white"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="www.ads.com"
+        android:text="Loading..."
+        android:id="@+id/fuser"
         android:textSize="15sp"
         android:textColor="@color/white"/>
 

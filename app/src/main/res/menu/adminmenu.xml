@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Menu">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/n_home"
+                    android:title="Home"
+                    android:icon="@drawable/h4"/>
+                <item android:id="@+id/n_feed"
+                    android:title="Post"
+                    android:icon="@drawable/post"/>
+                <item android:id="@+id/n_no"
+                    android:title="Notification"
+                    android:icon="@drawable/n1"/>
+            </group>
+        </menu>
+
+    </item>
+    <item android:title="Admin Menu">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/n_profile"
+                    android:title="Profile"
+                    android:icon="@drawable/profile"/>
+                <item android:id="@+id/n_logout"
+                    android:title="Logout"
+                    android:icon="@drawable/logout"/>
+
+            </group>
+        </menu>
+
+    </item>
+
+
+
+</menu>

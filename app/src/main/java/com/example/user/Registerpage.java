@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 public class Registerpage extends AppCompatActivity {
 
 
-    EditText eName,eContact,eUsername, ePassword;
+    EditText eName,eContact,eUsername, ePassword,eaddress,ecity,estate,pcode,edob,eoccupation,efield;
     Button signUp;
     TextView signIn;
-
 
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://user-4d03f-default-rtdb.firebaseio.com/");
 
@@ -41,10 +41,19 @@ public class Registerpage extends AppCompatActivity {
 
         eName=findViewById(R.id.name);
         eContact=findViewById(R.id.contact);
+        eaddress=findViewById(R.id.address);
         eUsername = findViewById(R.id.email);
         ePassword = findViewById(R.id.password);
+        ecity=findViewById(R.id.city);
+        estate=findViewById(R.id.state);
+        pcode=findViewById(R.id.postalcode);
+        edob=findViewById(R.id.dob);
+        eoccupation=findViewById(R.id.occupation);
+        efield = findViewById(R.id.interest);
         signIn = findViewById(R.id.sign_in);
         signUp =findViewById(R.id.sign_up);
+
+
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,13 +66,20 @@ public class Registerpage extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String editName=eName.getText().toString();
-                String editContact=eContact.getText().toString();
-                String editTextUsername=eUsername.getText().toString();
-                String editTextPassword=ePassword.getText().toString();
+                String name=eName.getText().toString();
+                String contact=eContact.getText().toString();
+                String address=eaddress.getText().toString();
+                String username=eUsername.getText().toString();
+                String password=ePassword.getText().toString();
+                String city=ecity.getText().toString();
+                String state=estate.getText().toString();
+                String postal=pcode.getText().toString();
+                String dob=edob.getText().toString();
+                String occupation=eoccupation.getText().toString();
+                String field =efield.getText().toString();
 
 
-                if (editName.isEmpty() || editContact.isEmpty() || editTextUsername.isEmpty() || editTextPassword.isEmpty())
+                if (name.isEmpty() || contact.isEmpty() || username.isEmpty() || password.isEmpty())
                 {
                     Toast.makeText(Registerpage.this,"Please enter all the details",Toast.LENGTH_SHORT).show();
                 }
@@ -71,26 +87,32 @@ public class Registerpage extends AppCompatActivity {
                     databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.hasChild(editTextUsername)){
+                            if (snapshot.hasChild(username)){
                                 Toast.makeText(Registerpage.this,"Username already exists",Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
 
-                                databaseReference.child("users").child(editTextUsername).child("editName").setValue(eName);
-                                databaseReference.child("users").child(editTextUsername).child("editContact").setValue(eContact);
+                                databaseReference.child("users").child(username).child("Name").setValue(name);
+                                databaseReference.child("users").child(username).child("Contact").setValue(contact);
+                                databaseReference.child("users").child(username).child("Address").setValue(address);
+                                databaseReference.child("users").child(username).child("Password").setValue(password);
+                                databaseReference.child("users").child(username).child("City").setValue(city);
+                                databaseReference.child("users").child(username).child("State").setValue(state);
+                                databaseReference.child("users").child(username).child("Postal Code").setValue(postal);
+                                databaseReference.child("users").child(username).child("Date of birth").setValue(dob);
+                                databaseReference.child("users").child(username).child("Occupation").setValue(occupation);
+                                databaseReference.child("users").child(username).child("Area of Interest").setValue(field);
 
-                                databaseReference.child("users").child(editTextUsername).child("editTextPassword").setValue(ePassword);
-
-
-
-                                Helperclass helperclass = new Helperclass(editName,editContact,editTextUsername,editTextPassword);
-                                databaseReference.child(editTextUsername).setValue(helperclass);
 
                                 Toast.makeText(Registerpage.this,"Registered Successfully",Toast.LENGTH_SHORT).show();
-                                Intent intent=new Intent(Registerpage.this,MainActivity.class);
+                                Intent intent =new Intent(Registerpage.this,MainActivity.class);
+
                                 startActivity(intent);
                                 finish();
+
+
+
 
 
                             }

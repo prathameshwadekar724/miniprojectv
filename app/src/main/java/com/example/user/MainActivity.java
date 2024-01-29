@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
         signIn = findViewById(R.id.sign_in);
         signUp =findViewById(R.id.sign_up);
 
+
+
+
+
+
+
+
+
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,23 +80,41 @@ public class MainActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.hasChild(eUsername)){
 
+                                String getPassword=snapshot.child(eUsername).child("Password").getValue(String.class);
 
-                                String getPassword=snapshot.child(eUsername).child("editTextPassword").getValue(String.class);
 
                                 if(getPassword.equals(ePassword)){
 
-                                    String getName=snapshot.child(eUsername).child("editName").getValue(String.class);
-                                    String getContact=snapshot.child(eUsername).child("editContact").getValue(String.class);
-                                    String getUsername=snapshot.child(eUsername).child("editTextUsername").getValue(String.class);
-                                    Toast.makeText(MainActivity.this,"Login successfull",Toast.LENGTH_SHORT).show();
 
-                                    Intent intent =new Intent(MainActivity.this,Homepage.class);
 
-                                    intent.putExtra("editName",getName);
-                                    intent.putExtra("editContact",getContact);
-                                    intent.putExtra("editTextUsername",getUsername);
+                                    String Name=snapshot.child(eUsername).child("Name").getValue(String.class);
+                                    String Contact=snapshot.child(eUsername).child("Contact").getValue(String.class);
+                                    String Address=snapshot.child(eUsername).child("Address").getValue(String.class);
+                                    String City=snapshot.child(eUsername).child("City").getValue(String.class);
+                                    String State=snapshot.child(eUsername).child("State").getValue(String.class);
+                                    String Postal=snapshot.child(eUsername).child("Postal Code").getValue(String.class);
+                                    String Dob=snapshot.child(eUsername).child("Date of birth").getValue(String.class);
+                                    String Occupation=snapshot.child(eUsername).child("Occupation").getValue(String.class);
+                                    String Field=snapshot.child(eUsername).child("Area of Interest").getValue(String.class);
+
+                                    Intent intent=new Intent(MainActivity.this, Homepage.class);
+                                    intent.putExtra("Name",Name);
+                                    intent.putExtra("Contact",Contact);
+                                    intent.putExtra("Address",Address);
+                                    intent.putExtra("eUsername",eUsername);
+                                    intent.putExtra("Password",getPassword);
+                                    intent.putExtra("City",City);
+                                    intent.putExtra("State",State);
+                                    intent.putExtra("Postal Code",Postal);
+                                    intent.putExtra("Date of birth",Dob);
+                                    intent.putExtra("Occupation",Occupation);
+                                    intent.putExtra("Area of Interest",Field);
+
+
 
                                     startActivity(intent);
+                                    Toast.makeText(MainActivity.this,"Login successfull",Toast.LENGTH_SHORT).show();
+
 
                                 }
                                 else{
@@ -106,5 +136,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+    }
+    public  void onBackPressed(){
+        Intent intent=new Intent(MainActivity.this,Start.class);
+        startActivity(intent);
+        finish();
     }
 }
