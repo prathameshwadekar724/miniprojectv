@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -20,14 +22,6 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    SharedPreferences preferences;
-    private static final String SHARED_PREF_NAME = "pref";
-
-    private static final String KEY_NAME = "name";
-    private static final String KEY_CONTACT = "contact";
-    private static final String SHARED_NAME = "Username";
-    private static final String SHARED_PASSWORD = "Password";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +31,16 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.lay_drw);
         navigationView = findViewById(R.id.view_nav);
         toolbar = findViewById(R.id.toolb);
+        View headerView = navigationView.getHeaderView(0);
 
-        preferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        TextView uname = headerView.findViewById(R.id.fname);
+        TextView user = headerView.findViewById(R.id.fuser);
+        Intent intent = getIntent();
+        String nameuser = intent.getStringExtra("admin");
+        uname.setText(nameuser);
+
+
+
 
 
         setSupportActionBar(toolbar);
@@ -50,7 +52,9 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.n_home);
+        // navigationView.setCheckedItem(R.id.n_home);
+
+
 
 
     }
@@ -68,23 +72,17 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
         int ID = item.getItemId();
 
         if (ID == R.id.n_home) {
+            Intent intent=new Intent(adminHompage.this,AdHome.class);
+            startActivity(intent);
 
-        } else if (ID == R.id.n_feed) {
-            Intent intent = new Intent(adminHompage.this, Post.class);
+        }  else if (ID == R.id.n_org) {
+            Intent intent = new Intent(adminHompage.this, organisationuser.class);
             startActivity(intent);
-        } else if (ID == R.id.n_no) {
-            Toast.makeText(this, "Open Notification", Toast.LENGTH_SHORT).show();
-        } else if (ID == R.id.n_profile) {
-            Intent intent = new Intent(adminHompage.this, Profile.class);
-            startActivity(intent);
-            Toast.makeText(this, "Open Profle", Toast.LENGTH_SHORT).show();
+
 
         } else if (ID == R.id.n_logout) {
 
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.commit();
-            editor.clear();
-            editor.apply();
+
             Intent intent = new Intent(adminHompage.this, Start.class);
             startActivity(intent);
             Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
@@ -95,6 +93,7 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
 

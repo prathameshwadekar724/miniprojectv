@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,58 +27,89 @@ public class Profile extends AppCompatActivity  {
 
     TextView pname,pcontact,paddress,pusername,ppassword,pcity,pstate,postal,pdob,pocc,field;
     TextView titleName;
+    ProgressBar progressBar;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-          pname=findViewById(R.id.nam_user);
-          pcontact=findViewById(R.id.cont_user);
-          paddress=findViewById(R.id.add_user);
-          pusername=findViewById(R.id.username_user);
-          ppassword=findViewById(R.id.pass_user);
-          pcity=findViewById(R.id.city_user);
-          pstate=findViewById(R.id.state_user);
-          postal=findViewById(R.id.pos_user);
-          pdob=findViewById(R.id.dob_user);
-          pocc=findViewById(R.id.occupation_user);
-          field=findViewById(R.id.field_user);
-          titleName=findViewById(R.id.welcome);
+        pname=findViewById(R.id.nam_user);
+        pcontact=findViewById(R.id.cont_user);
+        paddress=findViewById(R.id.add_user);
+        pusername=findViewById(R.id.username_user);
+        ppassword=findViewById(R.id.pass_user);
+        pcity=findViewById(R.id.city_user);
+        pstate=findViewById(R.id.state_user);
+        postal=findViewById(R.id.pos_user);
+        pdob=findViewById(R.id.dob_user);
+        pocc=findViewById(R.id.occupation_user);
+        field=findViewById(R.id.field_user);
+        titleName=findViewById(R.id.welcome);
+        progressBar=findViewById(R.id.progressbar);
+
+        auth=FirebaseAuth.getInstance();
+
+        FirebaseUser firebaseUser=auth.getCurrentUser();
 
 
+        if (firebaseUser==null){
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            progressBar.setVisibility(View.VISIBLE);
+            showDetail(firebaseUser);
+        }
 
-
-        showUserData();
 
 
     }
-    public void showUserData(){
-        Intent intent=getIntent();
-        String nameuser=intent.getStringExtra("Name");
-        String contactuser=intent.getStringExtra("Contact");
-        String addressuser=intent.getStringExtra("Address");
-        String user=intent.getStringExtra("eUsername");
-        String up=intent.getStringExtra("Password");
-        String cityuser=intent.getStringExtra("City");
-        String stateuser=intent.getStringExtra("State");
-        String postaluser=intent.getStringExtra("Postal Code");
-        String dobuser=intent.getStringExtra("Date of birth");
-        String occupationuser=intent.getStringExtra("Occupation");
-        String fieldu=intent.getStringExtra("Area of Interest");
 
-        titleName.setText(nameuser);
-        pname.setText(nameuser);
-        pcontact.setText(contactuser);
-        paddress.setText(addressuser);
-        pusername.setText(user);
-        ppassword.setText(up);
-        pcity.setText(cityuser);
-        pstate.setText(stateuser);
-        postal.setText(postaluser);
-        pdob.setText(dobuser);
-        pocc.setText(occupationuser);
-        field.setText(fieldu);
+    private void showDetail(FirebaseUser firebaseUser) {
+        String userId = firebaseUser.getUid();
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Users");
+
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserDetail userDetail=snapshot.getValue(UserDetail.class);
+                if (userDetail!=null){
+                    String Name=userDetail.Name;
+                    String Contact=userDetail.Contact;
+                    String Address=userDetail.Address;
+                    String Email=firebaseUser.getEmail();
+                    String Password=userDetail.Password;
+                    String City=userDetail.City;
+                    String State=userDetail.State;
+                    String Postal=userDetail.Postal;
+                    String Dob=userDetail.Dob;
+                    String Occupation=userDetail.Occupation;
+                    String Field=userDetail.Field;
+
+
+                    titleName.setText(Name);
+                    pname.setText(Name);
+                    pcontact.setText(Contact);
+                    paddress.setText(Address);
+                    pusername.setText(Email);
+                    ppassword.setText(Password);
+                    pcity.setText(City);
+                    pstate.setText(State);
+                    postal.setText(Postal);
+                    pdob.setText(Dob);
+                    pocc.setText(Occupation);
+                    field.setText(Field);
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Profile.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 }

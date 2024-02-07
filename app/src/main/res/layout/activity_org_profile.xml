@@ -7,7 +7,7 @@
     android:background="@drawable/profile_back"
     android:orientation="vertical"
     android:padding="30dp"
-    tools:context=".Profile">
+    tools:context=".OrgProfile">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cont_user"
+                android:id="@+id/license"
                 android:layout_alignStart="@+id/imcont"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/cont_user"
+                android:layout_below="@id/license"
                 android:background="@android:color/darker_gray"
                 android:id="@+id/view1"/>
             <ImageView
@@ -125,13 +125,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:id="@+id/imuser"
-                android:background="@drawable/username1"
+                android:background="@drawable/contact"
                 android:layout_below="@+id/view2"
                 android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/username_user"
+                android:id="@+id/contact"
                 android:layout_marginStart="50dp"
                 android:layout_below="@id/view2"
                 android:layout_marginTop="20dp"
@@ -143,20 +143,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/username_user"
+                android:layout_below="@id/contact"
                 android:background="@android:color/darker_gray"
                 android:id="@+id/view3"/>
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:id="@+id/impasse"
-                android:background="@drawable/password"
+                android:background="@drawable/profession"
                 android:layout_below="@+id/view3"
                 android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/pass_user"
+                android:id="@+id/type"
                 android:layout_below="@+id/view3"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="50dp"
@@ -168,20 +168,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/pass_user"
+                android:layout_below="@id/type"
                 android:id="@+id/view4"
                 android:background="@android:color/darker_gray"/>
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:id="@+id/imcity"
-                android:background="@drawable/city"
+                android:background="@drawable/username1"
                 android:layout_below="@+id/view4"
                 android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/city_user"
+                android:id="@+id/username"
                 android:layout_below="@+id/view4"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="50dp"
@@ -193,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/city_user"
+                android:layout_below="@id/username"
                 android:id="@+id/view5"
                 android:background="@android:color/darker_gray"/>
 
@@ -201,13 +201,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:id="@+id/imstate"
-                android:background="@drawable/state"
+                android:background="@drawable/password"
                 android:layout_below="@+id/view5"
                 android:layout_marginTop="20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/state_user"
+                android:id="@+id/password"
                 android:layout_below="@+id/view5"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="50dp"
@@ -219,122 +219,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@id/state_user"
+                android:layout_below="@id/password"
                 android:id="@+id/view6"
                 android:background="@android:color/darker_gray"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/impostal"
-                android:background="@drawable/postal"
-                android:layout_below="@+id/view6"
-                android:layout_marginTop="20dp"/>
-            <TextView
+
+            <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/pos_user"
-                android:layout_below="@+id/view6"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="50dp"
-                android:hint="Loading..."
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/pos_user"
-                android:id="@+id/view7"
-                android:background="@android:color/darker_gray"/>
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/imdob"
-                android:background="@drawable/dob"
-                android:layout_below="@+id/view7"
-                android:layout_marginTop="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/dob_user"
-                android:layout_below="@+id/view7"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="50dp"
-                android:hint="Loading..."
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/dob_user"
-                android:id="@+id/view8"
-                android:background="@android:color/darker_gray"/>
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/imoccupation"
-                android:background="@drawable/occupation"
-                android:layout_below="@+id/view8"
-                android:layout_marginTop="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/occupation_user"
-                android:layout_below="@+id/view8"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="50dp"
-                android:hint="Loading..."
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/occupation_user"
-                android:id="@+id/view9"
-                android:background="@android:color/darker_gray"/>
-
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/imfield"
-                android:background="@drawable/profession"
-                android:layout_below="@+id/view9"
-                android:layout_marginTop="20dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/field_user"
-                android:layout_below="@+id/view9"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="50dp"
-                android:hint="Loading..."
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/field_user"
-                android:background="@android:color/darker_gray"/>
-
+                android:id="@+id/progressbar"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:elevation="10dp"
+                android:visibility="gone"/>
         </RelativeLayout>
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progressbar"
-            android:layout_gravity="center"
-            android:elevation="10dp"
-            android:visibility="gone"/>
+
     </LinearLayout>
+
 
 </ScrollView>

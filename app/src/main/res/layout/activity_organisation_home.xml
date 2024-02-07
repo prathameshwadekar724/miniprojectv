@@ -5,21 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/lay_drw"
-    android:background="@drawable/volback"
-    tools:context=".adminHompage"
+    tools:context=".Homepage"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Our mission is to facilitate meaningful connections between compassionate volunteers and individuals in need. As a non-profit organization, we are dedicated to creating a world enriched with compassion and humanity.
-Join us in our journey towards a brighter, more compassionate world, where people from all walks of life come together to build a society that values the well-being and happiness of every individual. Together, we can shape a future filled with hope, love, and a shared commitment to making the world a better place for all."
-        android:gravity="center"
-        android:layout_marginTop="100dp"
-        android:textStyle="bold"
-        android:textSize="30dp"/>
+        android:background="@drawable/volback">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:elevation="10dp"
+            android:visibility="gone"
+            android:id="@+id/progressbar"/>
 
+
+    </RelativeLayout>
 
 
     <com.google.android.material.navigation.NavigationView
@@ -27,7 +30,7 @@ Join us in our journey towards a brighter, more compassionate world, where peopl
         android:layout_height="match_parent"
         android:id="@+id/view_nav"
         app:headerLayout="@layout/head_r"
-        app:menu="@menu/adminmenu"
+        app:menu="@menu/orgmenu"
         android:layout_gravity="start"/>
 
     <ScrollView
@@ -40,7 +43,7 @@ Join us in our journey towards a brighter, more compassionate world, where peopl
                 android:id="@+id/toolb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#00008577"
+                android:background="@color/teal_200"
                 app:titleTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
