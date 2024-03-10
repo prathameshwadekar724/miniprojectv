@@ -18,10 +18,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class OrgProfile extends AppCompatActivity {
+
     TextView name,license,address,contact,type,email,password;
     TextView titleName;
     ProgressBar progressBar;
     FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

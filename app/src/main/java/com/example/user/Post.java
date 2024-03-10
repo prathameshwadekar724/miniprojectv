@@ -1,133 +1,165 @@
 package com.example.user;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 public class Post extends AppCompatActivity {
-    DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReferenceFromUrl("https://user-4d03f-default-rtdb.firebaseio.com/");
-    ActivityResultLauncher<String> launcher;
-    FirebaseStorage firebaseStorage;
-    private ImageView imageView;
-    private Button submit;
-    private  Button upload;
-    FirebaseDatabase database;
+    private FloatingActionButton uploadButton;
+    private ImageView uploadImage;
+    EditText caption;
+    ProgressBar progressBar;
+    private Uri imageUri;
+    final private DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Image");
+    final private StorageReference storageReference= FirebaseStorage.getInstance().getReference();
 
+    private DatabaseReference organizationRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        firebaseStorage=FirebaseStorage.getInstance();
-        imageView=findViewById(R.id.upload);
 
-        database=FirebaseDatabase.getInstance();
+        uploadButton=findViewById(R.id.upb);
+        caption=findViewById(R.id.up);
+        uploadImage=findViewById(R.id.imageView);
+        progressBar=findViewById(R.id.progressbar);
 
-        submit =findViewById(R.id.submit_post_button);
-        upload=findViewById(R.id.bup);
-        submit.setOnClickListener(new View.OnClickListener() {
+        progressBar.setVisibility(View.GONE);
+
+
+
+        organizationRef=FirebaseDatabase.getInstance().getReference("Organisation");
+
+
+
+        ActivityResultLauncher<Intent> activityResultLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                if (o.getResultCode() == Activity.RESULT_OK){
+                    Intent data=o.getData();
+                    imageUri=data.getData();
+                    uploadImage.setImageURI(imageUri);
+                }else{
+                    Toast.makeText(Post.this, "No image selected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveToFirebase();
+                Intent image=new Intent();
+                image.setAction(Intent.ACTION_GET_CONTENT);
+                image.setType("image/*");
+                activityResultLauncher.launch(image);
             }
         });
-        upload.setOnClickListener(new View.OnClickListener() {
+        uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launcher.launch("image/*");
-            }
-        });
-        databaseReference.child("Images").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String image=snapshot.getValue(String.class);
-                Picasso.get().load(image).into(imageView);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        launcher=registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri uri) {
-                imageView.setImageURI(uri);
-
-
-                final StorageReference reference=firebaseStorage.getReference().child("Image");
-
-                reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                databaseReference.child("Image").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(Post.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-
-
+                if (imageUri!=null){
+                    upload(imageUri);
+                }else{
+                    Toast.makeText(Post.this, "Select image", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
-    private void saveToFirebase() {
-        String eventName=((EditText)findViewById(R.id.event_name_input)).getText().toString();
-        String eventLocation=((EditText)findViewById(R.id.event_location_input)).getText().toString();
-        String eventVolunteers=((EditText)findViewById(R.id.volunteers_required_input)).getText().toString();
-        String eventCategory=((EditText)findViewById(R.id.event_category_input)).getText().toString();
-        String eventManger=((EditText)findViewById(R.id.manager_name_input)).getText().toString();
-        String eventContact=((EditText)findViewById(R.id.contact_details_input)).getText().toString();
+    private void upload(Uri uri){
+        String cap = caption.getText().toString();
+        final StorageReference imageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
 
-        String postId=FirebaseDatabase.getInstance().getReference().child("posts").push().getKey();
+        // Fetch organization name
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
 
-        CreatePost createPost=new CreatePost(postId, eventName, eventLocation,eventVolunteers,eventCategory,eventManger,eventContact);
+            organizationRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String organizationName = dataSnapshot.child("Name").getValue(String.class);
 
-        databaseReference.child("posts").child(postId).setValue(createPost).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(Post.this, "Post saved", Toast.LENGTH_SHORT).show();
+                        // Upload image with organization name
+                        imageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                imageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String key = databaseReference.push().getKey();
+                                        Data data = new Data(uri.toString(), cap, key,  organizationName);
+                                        databaseReference.child(key).setValue(data);
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(Post.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(Post.this, OrganisationHome.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                                progressBar.setVisibility(View.VISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(Post.this, "Failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-                else {
-                    Toast.makeText(Post.this, "Post not created", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // Handle any errors
+                }
+            });
+        }
+    }
+
+    private String getFileExtension(Uri fileuri){
+        ContentResolver contentResolver=getContentResolver();
+        MimeTypeMap mimeTypeMap=MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(fileuri));
     }
 }

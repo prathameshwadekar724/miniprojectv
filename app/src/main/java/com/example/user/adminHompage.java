@@ -35,9 +35,8 @@ public class adminHompage extends AppCompatActivity implements NavigationView.On
 
         TextView uname = headerView.findViewById(R.id.fname);
         TextView user = headerView.findViewById(R.id.fuser);
-        Intent intent = getIntent();
-        String nameuser = intent.getStringExtra("admin");
-        uname.setText(nameuser);
+        uname.setText("admin");
+        user.setText("admin123");
 
 
 

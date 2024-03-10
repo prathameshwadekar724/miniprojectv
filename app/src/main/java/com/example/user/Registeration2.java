@@ -26,17 +26,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class registerpage2 extends AppCompatActivity {
-
+public class Registeration2 extends AppCompatActivity {
     EditText orgname,lc,orgaddress,ocontact,otype,ouser,opass,copass;
     Button signUp;
     TextView signIn;
@@ -46,13 +42,15 @@ public class registerpage2 extends AppCompatActivity {
     ProgressBar progressBar;
     private static final String TAG="registerpage2";
 
+
+
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://user-4d03f-default-rtdb.firebaseio.com/");
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registerpage2);
+        setContentView(R.layout.activity_registeration2);
 
         orgname=findViewById(R.id.name);
         lc=findViewById(R.id.license);
@@ -81,7 +79,7 @@ public class registerpage2 extends AppCompatActivity {
 
                 if (selectedOption!=options[0]){
                     otype.setText(selectedOption);
-                    Toast.makeText(registerpage2.this, "type is selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "type is selected", Toast.LENGTH_SHORT).show();
                     if (selectedOption.equals(options[6])){
                         otype.setText(null);
                         otype.setFocusable(true);
@@ -105,7 +103,7 @@ public class registerpage2 extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(registerpage2.this,orglogin.class);
+                Intent intent = new Intent(Registeration2.this,OrganisationLogin.class);
                 startActivity(intent);
                 finish();
             }
@@ -129,44 +127,44 @@ public class registerpage2 extends AppCompatActivity {
 
 
                 if(name.isEmpty() || contact.isEmpty() || email.isEmpty() || password.isEmpty()){
-                    Toast.makeText(registerpage2.this, "Please Enter all the details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Please Enter all the details", Toast.LENGTH_SHORT).show();
                 }
                 else if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(registerpage2.this, "Please Enter Your Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Please Enter Your Email", Toast.LENGTH_SHORT).show();
                     ouser.setError("Email is required");
                     ouser.requestFocus();
 
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Toast.makeText(registerpage2.this, "Please re-Enter Your Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Please re-Enter Your Email", Toast.LENGTH_SHORT).show();
                     ouser.setError("Valid Email is required");
                     ouser.requestFocus();
 
                 } else if (contact.length() !=10) {
-                    Toast.makeText(registerpage2.this, "Please re-Enter your mobile no.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Please re-Enter your mobile no.", Toast.LENGTH_SHORT).show();
                     ocontact.setError("Mobile no.should be 10 digits");
                     ocontact.requestFocus();
                 } else if (!mobilematcher.find()) {
-                    Toast.makeText(registerpage2.this, "Please re-enter your mobile no", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Please re-enter your mobile no", Toast.LENGTH_SHORT).show();
                     ocontact.setError("Mobile no is not valid");
                     ocontact.requestFocus();
 
                 } else if (password.length() < 6) {
-                    Toast.makeText(registerpage2.this, "Password should be at least 6 digits", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Password should be at least 6 digits", Toast.LENGTH_SHORT).show();
                     opass.setError("Password is to weak");
                     opass.requestFocus();
                 } else if (!password.equals(cpassword)) {
-                    Toast.makeText(registerpage2.this, "Password not matched", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Registeration2.this, "Password not matched", Toast.LENGTH_SHORT).show();
                     opass.setError("Password Confirmation is required");
                     opass.requestFocus();
 
                 } else{
                     progressBar.setVisibility(View.VISIBLE);
                     FirebaseAuth auth=FirebaseAuth.getInstance();
-                    auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(registerpage2.this,new OnCompleteListener<AuthResult>() {
+                    auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(Registeration2.this,new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
-                                Toast.makeText(registerpage2.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Registeration2.this, "User registered successfully", Toast.LENGTH_SHORT).show();
                                 FirebaseUser user=auth.getCurrentUser();
                                 OrgUserDetail orgUserDetail=new OrgUserDetail(name,license,address,contact,email,password,type);
                                 databaseReference.child("Organisation").child(user.getUid()).setValue(orgUserDetail).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -174,14 +172,14 @@ public class registerpage2 extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             user.sendEmailVerification();
-                                            Toast.makeText(registerpage2.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
-                                            Intent intent=new Intent(registerpage2.this,orglogin.class);
+                                            Toast.makeText(Registeration2.this, "User Registered Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent intent=new Intent(Registeration2.this,OrganisationLogin.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
                                             finish();
                                         }
                                         else {
-                                            Toast.makeText(registerpage2.this, "User Registered Failed", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(Registeration2.this, "User Registered Failed", Toast.LENGTH_SHORT).show();
 
                                         }
                                         progressBar.setVisibility(View.GONE);
@@ -204,7 +202,7 @@ public class registerpage2 extends AppCompatActivity {
                                     opass.requestFocus();
                                 }catch (Exception e){
                                     Log.e(TAG,e.getMessage());
-                                    Toast.makeText(registerpage2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Registeration2.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
                                 }
                             }
@@ -216,10 +214,6 @@ public class registerpage2 extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
     }
 }

@@ -49,7 +49,7 @@ public class Start extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else if (selectedOption.equals(options[3])) {
-                        Intent intent=new Intent(Start.this,orglogin.class);
+                        Intent intent=new Intent(Start.this,OrganisationLogin.class);
                         startActivity(intent);
                         finish();
                     }

@@ -7,7 +7,7 @@
     android:background="@drawable/back"
     android:padding="40dp"
     android:orientation="vertical"
-    tools:context=".orglogin">
+    tools:context=".OrganisationLogin">
 
     <TextView
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email/Username"
+            android:textColor="@color/white"
             android:inputType="textEmailAddress"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -55,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:textColor="@color/white"
             android:inputType="textEmailAddress"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +76,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/sign_in"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="50dp">
+        android:layout_marginStart="60dp">
         <TextView
 
             android:layout_width="wrap_content"

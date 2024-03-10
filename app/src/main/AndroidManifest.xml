@@ -13,8 +13,35 @@
         android:theme="@style/Theme.User"
         tools:targetApi="31">
         <activity
+            android:name=".Details2"
+            android:exported="false" />
+        <activity
+            android:name=".Details"
+            android:exported="false" />
+        <activity
+            android:name=".Display"
+            android:exported="false" />
+        <activity
+            android:name=".organisationuser"
+            android:exported="false" />
+        <activity
+            android:name=".AdHome"
+            android:exported="false" />
+        <activity
+            android:name=".OrgProfile"
+            android:exported="false" />
+        <activity
+            android:name=".OrganisationHome"
+            android:exported="false" />
+        <activity
+            android:name=".Registeration2"
+            android:exported="false" />
+        <activity
+            android:name=".OrganisationLogin"
+            android:exported="false" />
+        <activity
             android:name=".Start"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

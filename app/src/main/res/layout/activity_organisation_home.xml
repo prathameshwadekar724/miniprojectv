@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/lay_drw"
-    tools:context=".Homepage"
+    tools:context=".OrganisationHome"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
     <RelativeLayout

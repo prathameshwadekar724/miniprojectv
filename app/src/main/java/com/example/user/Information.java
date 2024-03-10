@@ -13,6 +13,24 @@ public class Information {
     private String Occupation;
     private String Type;
     private String License;
+    private String Postal;
+    private String Field;
+
+    public Information(String name, String contact, String address, String email, String password, String dob, String city, String state, String occupation, String type, String license, String postal, String field) {
+        Name = name;
+        Contact = contact;
+        Address = address;
+        Email = email;
+        Password = password;
+        Dob = dob;
+        City = city;
+        State = state;
+        Occupation = occupation;
+        Type = type;
+        License = license;
+        Postal = postal;
+        Field = field;
+    }
 
     public String getName() {
         return Name;
@@ -118,25 +136,8 @@ public class Information {
         Field = field;
     }
 
-    public Information(String name, String contact, String address, String email, String password, String dob, String city, String state, String occupation, String type, String license, String postal, String field) {
-        Name = name;
-        Contact = contact;
-        Address = address;
-        Email = email;
-        Password = password;
-        Dob = dob;
-        City = city;
-        State = state;
-        Occupation = occupation;
-        Type = type;
-        License = license;
-        Postal = postal;
-        Field = field;
-    }
-
-    private String Postal;
-    private String Field;
     public Information() {
     }
+
 
 }

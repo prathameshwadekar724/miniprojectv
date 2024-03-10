@@ -141,6 +141,9 @@ public class Registerpage extends AppCompatActivity {
 
 
 
+
+
+
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {

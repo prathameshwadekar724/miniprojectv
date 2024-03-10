@@ -46,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
+                android:textColor="@color/white"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contact"
+                android:textColor="@color/white"
                 android:inputType="textPhonetic"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -77,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Address"
+                android:textColor="@color/white"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,6 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email/Username"
+                android:textColor="@color/white"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,6 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:textColor="@color/white"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -128,6 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirm Password"
+                android:textColor="@color/white"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,6 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="City"
+                android:textColor="@color/white"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -160,6 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="State"
+                android:textColor="@color/white"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -175,6 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Postal Code"
+                android:textColor="@color/white"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -191,6 +200,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Date of Birth(dd/mm/yy)"
                 android:inputType="date"
+                android:textColor="@color/white"
                 android:focusable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -209,6 +219,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Occupatiom"
                 android:focusable="false"
+                android:textColor="@color/white"
                 android:inputType="text"/>
             <Spinner
                 android:layout_width="30dp"
@@ -222,7 +233,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_below="@+id/h13"
             android:id="@+id/h14"
             android:textColorHint="@color/white"
@@ -233,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Area of interest"
                 android:focusable="false"
+                android:textColor="@color/white"
                 android:inputType="text"/>
             <Spinner
                 android:layout_width="30dp"

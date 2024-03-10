@@ -8,7 +8,7 @@
                     android:title="Home"
                     android:icon="@drawable/h4"/>
                 <item android:id="@+id/n_feed"
-                    android:title="VPost"
+                    android:title="View Post"
                     android:icon="@drawable/post"/>
                 <item android:id="@+id/n_no"
                     android:title="Notification"
