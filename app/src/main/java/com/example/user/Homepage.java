@@ -134,7 +134,7 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
         dataList=new ArrayList<>();
         adapter=new MyAdapter(dataList,this);
-        recyclerView.setAdapter(adapter);
+        recyclerView1.setAdapter(adapter);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -274,15 +274,14 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         SearchView searchView=(SearchView) menuItem.getActionView();
         searchView.setQueryHint("Search Here");
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
 
             @Override
             public boolean onQueryTextSubmit(String query) {
 
                 searchOrganizations(query);
                 recyclerView.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.GONE);
                 return false;
             }
 
@@ -290,6 +289,7 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             public boolean onQueryTextChange(String newText) {
                 searchOrganizations(newText);
                 recyclerView.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
                 return false;
 
             }
@@ -313,7 +313,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
                     Information organization = snapshot.getValue(Information.class);
                     info.add(organization);
                 }
-                
                 adapter2.notifyDataSetChanged();
 
 
