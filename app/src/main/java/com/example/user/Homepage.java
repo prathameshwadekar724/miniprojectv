@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Homepage extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -50,12 +52,23 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
     TextView uname,user;
     ProgressBar progressBar;
 
-    SearchView searchView;
 
     RecyclerView recyclerView;
 
     MyAdapter2 adapter2;
     ArrayList<Information> info;
+
+    FloatingActionButton floatingActionButton;
+
+    RecyclerView recyclerView1;
+    ArrayList<Data> dataList;
+    MyAdapter adapter;
+
+
+    final private DatabaseReference databaseReference1= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
+
+
+
     final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
 
 
@@ -63,6 +76,9 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+
+
 
         drawerLayout = findViewById(R.id.lay_drw);
         navigationView = findViewById(R.id.view_nav);
@@ -112,6 +128,37 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setCheckedItem(R.id.n_home);
 
 
+
+        recyclerView1=findViewById(R.id.recyclerview);
+        recyclerView1.setHasFixedSize(true);
+        recyclerView1.setLayoutManager(new LinearLayoutManager(this));
+        dataList=new ArrayList<>();
+        adapter=new MyAdapter(dataList,this);
+        recyclerView.setAdapter(adapter);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        databaseReference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Data dataClass=dataSnapshot.getValue(Data.class);
+                    dataList.add(dataClass);
+                }
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Homepage.this, "Error", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+
+
+
     }
 
 
@@ -141,8 +188,8 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
     private void showDetail(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserDetail detail=snapshot.getValue(UserDetail.class);
@@ -186,26 +233,20 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
         if (ID == R.id.n_home) {
 
-
-        } else if (ID == R.id.n_feed) {
-            Intent intent = new Intent(Homepage.this, Display.class);
-            startActivity(intent);
         } else if (ID == R.id.n_no) {
-            Toast.makeText(this, "Open Notification", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(Homepage.this,VNotification.class);
+            startActivity(intent);
+        } else if (ID == R.id.nList) {
+            Intent intent=new Intent(Homepage.this, Vlist.class);
+            startActivity(intent);
+        } else if (ID == R.id.onList) {
+            Intent intent=new Intent(Homepage.this,organisationuser.class);
+            startActivity(intent);
         } else if (ID == R.id.n_profile) {
-
-
             Intent profile = new Intent(Homepage.this, Profile.class);
-
             startActivity(profile);
             Toast.makeText(this, "Opening Profile", Toast.LENGTH_SHORT).show();
 
-
-        } else if (ID==R.id.n_update) {
-            //Intent intent=new Intent(Homepage.this,Update.class);
-            //startActivity(intent);
-
-        } else if (ID==R.id.n_change) {
 
         } else if (ID == R.id.n_logout) {
 
@@ -234,28 +275,34 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         searchView.setQueryHint("Search Here");
 
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                searchOrganizations(query);
+                recyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchOrganizations(newText);
+                recyclerView.setVisibility(View.GONE);
                 return false;
 
             }
+
 
         });
 
         return super.onCreateOptionsMenu(menu);
     }
 
+
     private void searchOrganizations(String searchText) {
-        Query query = databaseReference.orderByChild("Name").startAt(searchText).endAt(searchText + "\uf8ff");
+        Query query = databaseReference.orderByChild("Name").equalTo(searchText);
 
 
         query.addValueEventListener(new ValueEventListener() {
@@ -278,8 +325,8 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             }
         });
 
-    }
 
+    }
 
 
 }

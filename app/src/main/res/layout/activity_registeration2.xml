@@ -112,15 +112,13 @@
                 android:id="@+id/interest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Type of organisation"
                 android:textColor="@color/white"
                 android:focusable="false"
                 android:inputType="text"/>
             <Spinner
-                android:layout_width="30dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:translationY="-40dp"
-                android:layout_marginStart="300dp"
                 android:focusable="false"
                 android:id="@+id/spinner"/>
         </com.google.android.material.textfield.TextInputLayout>

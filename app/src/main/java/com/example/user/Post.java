@@ -39,12 +39,12 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 public class Post extends AppCompatActivity {
-    private FloatingActionButton uploadButton;
+    private Button uploadButton;
     private ImageView uploadImage;
-    EditText caption;
+    EditText name,description;
     ProgressBar progressBar;
     private Uri imageUri;
-    final private DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Image");
+    final private DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
     final private StorageReference storageReference= FirebaseStorage.getInstance().getReference();
 
     private DatabaseReference organizationRef;
@@ -55,7 +55,8 @@ public class Post extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         uploadButton=findViewById(R.id.upb);
-        caption=findViewById(R.id.up);
+        name=findViewById(R.id.up);
+        description=findViewById(R.id.desc);
         uploadImage=findViewById(R.id.imageView);
         progressBar=findViewById(R.id.progressbar);
 
@@ -102,7 +103,8 @@ public class Post extends AppCompatActivity {
     }
 
     private void upload(Uri uri){
-        String cap = caption.getText().toString();
+        String Name = name.getText().toString();
+        String desc=description.getText().toString();
         final StorageReference imageReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
 
         // Fetch organization name
@@ -124,7 +126,7 @@ public class Post extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         String key = databaseReference.push().getKey();
-                                        Data data = new Data(uri.toString(), cap, key,  organizationName);
+                                        Data data = new Data(uri.toString(), Name, key,  organizationName,desc);
                                         databaseReference.child(key).setValue(data);
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(Post.this, "Uploaded", Toast.LENGTH_SHORT).show();

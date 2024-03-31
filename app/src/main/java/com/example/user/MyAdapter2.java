@@ -4,13 +4,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -26,7 +33,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
     @NonNull
     @Override
     public MyAdapter2.MyViewHolder2 onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list1, parent, false);
         return new MyAdapter2.MyViewHolder2(view);
     }
 
@@ -35,6 +42,7 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
         Information information=data.get(position);
         holder.name.setText(information.getName());
         holder.username.setText(information.getEmail());
+
 
     }
 
@@ -46,10 +54,15 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
     public class MyViewHolder2 extends RecyclerView.ViewHolder{
 
         TextView name,username;
+        Button button;
+
         public MyViewHolder2(View view) {
             super(view);
-            name=view.findViewById(R.id.rName);
-            username=view.findViewById(R.id.rEmail);
+            name=view.findViewById(R.id.pName);
+            username=view.findViewById(R.id.pEmail);
+
         }
+
     }
+
 }

@@ -83,7 +83,7 @@ public class AdHome extends AppCompatActivity {
                 intent.putExtra("Postal",clickedItem.getPostal());
                 intent.putExtra("Dob",clickedItem.getDob());
                 intent.putExtra("Occupation",clickedItem.getOccupation());
-                intent.putExtra("Type",clickedItem.getType());
+                intent.putExtra("Field",clickedItem.getField());
                 startActivity(intent);
             }
         });

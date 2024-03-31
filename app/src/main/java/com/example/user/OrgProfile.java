@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class OrgProfile extends AppCompatActivity {
 
-    TextView name,license,address,contact,type,email,password;
+    TextView name,license,address,contact,type,email;
     TextView titleName;
     ProgressBar progressBar;
     FirebaseAuth auth;
@@ -36,7 +36,6 @@ public class OrgProfile extends AppCompatActivity {
         contact=findViewById(R.id.contact);
         type=findViewById(R.id.type);
         email=findViewById(R.id.username);
-        password=findViewById(R.id.password);
         titleName=findViewById(R.id.welcome);
         progressBar=findViewById(R.id.progressbar);
 
@@ -70,7 +69,6 @@ public class OrgProfile extends AppCompatActivity {
                     String Contact=orgUserDetail.Contact;
                     String Address=orgUserDetail.Address;
                     String Email=firebaseUser.getEmail();
-                    String Password=orgUserDetail.Password;
                     String Type=orgUserDetail.Type;
 
                     titleName.setText(Name);
@@ -80,7 +78,6 @@ public class OrgProfile extends AppCompatActivity {
                     address.setText(Address);
                     type.setText(Type);
                     email.setText(Email);
-                    password.setText(Password);
 
                 }
                 progressBar.setVisibility(View.GONE);

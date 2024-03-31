@@ -34,7 +34,7 @@ public class Display extends AppCompatActivity {
 
     ProgressBar progressBar;
 
-    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Image");
+    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,7 +16,12 @@ public class Information {
     private String Postal;
     private String Field;
 
-    public Information(String name, String contact, String address, String email, String password, String dob, String city, String state, String occupation, String type, String license, String postal, String field) {
+    private String Gender;
+
+    public Information() {
+    }
+
+    public Information(String name, String contact, String address, String email, String password, String dob, String city, String state, String occupation, String type, String license, String postal, String field, String gender) {
         Name = name;
         Contact = contact;
         Address = address;
@@ -30,6 +35,7 @@ public class Information {
         License = license;
         Postal = postal;
         Field = field;
+        Gender = gender;
     }
 
     public String getName() {
@@ -136,8 +142,11 @@ public class Information {
         Field = field;
     }
 
-    public Information() {
+    public String getGender() {
+        return Gender;
     }
 
-
+    public void setGender(String gender) {
+        Gender = gender;
+    }
 }

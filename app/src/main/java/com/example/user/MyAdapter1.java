@@ -25,8 +25,6 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.MyViewHolder1> {
     }
 
     private OnItemClickListener mListener;
-
-    // Method to set the click listener
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
@@ -47,7 +45,6 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.MyViewHolder1> {
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter1.MyViewHolder1 holder,int position) {
-
         holder.Name.setText(data.get(position).getName());
         holder.Email.setText(data.get(position).getEmail());
 

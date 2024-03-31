@@ -78,7 +78,7 @@ public class organisationuser extends AppCompatActivity {
                 intent.putExtra("Name",clickedItem.getName());
                 intent.putExtra("Contact",clickedItem.getContact());
                 intent.putExtra("Email",clickedItem.getEmail());
-                intent.putExtra("Password",clickedItem.getPassword());
+
                 intent.putExtra("Address",clickedItem.getAddress());
                 intent.putExtra("License",clickedItem.getLicense());
                 intent.putExtra("Type",clickedItem.getType());

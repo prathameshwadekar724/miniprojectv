@@ -86,9 +86,26 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/h5"
             android:id="@+id/h6"
+            android:textColorHint="@color/white"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Gender"
+                android:textColor="@color/white"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/h6"
+            android:id="@+id/h7"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -106,8 +123,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h6"
-            android:id="@+id/h7"
+            android:layout_below="@+id/h7"
+            android:id="@+id/h8"
             app:passwordToggleEnabled="true"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -123,8 +140,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h7"
-            android:id="@+id/h8"
+            android:layout_below="@+id/h8"
+            android:id="@+id/h9"
             app:passwordToggleEnabled="true"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -142,8 +159,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h8"
-            android:id="@+id/h9"
+            android:layout_below="@+id/h9"
+            android:id="@+id/h10"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -158,8 +175,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h9"
-            android:id="@+id/h10"
+            android:layout_below="@+id/h10"
+            android:id="@+id/h11"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -174,8 +191,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h10"
-            android:id="@+id/h11"
+            android:layout_below="@+id/h11"
+            android:id="@+id/h12"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -190,8 +207,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h11"
-            android:id="@+id/h12"
+            android:layout_below="@+id/h12"
+            android:id="@+id/h13"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -208,8 +225,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/h12"
-            android:id="@+id/h13"
+            android:layout_below="@+id/h13"
+            android:id="@+id/h14"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -217,14 +234,12 @@
                 android:id="@+id/occupation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Occupatiom"
                 android:focusable="false"
                 android:textColor="@color/white"
                 android:inputType="text"/>
             <Spinner
-                android:layout_width="30dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="300dp"
                 android:translationY="-40dp"
                 android:focusable="false"
                 android:id="@+id/spinner"/>
@@ -233,22 +248,20 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/h13"
-            android:id="@+id/h14"
+            android:layout_below="@+id/h14"
+            android:id="@+id/h15"
             android:textColorHint="@color/white"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/interest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Area of interest"
                 android:focusable="false"
                 android:textColor="@color/white"
                 android:inputType="text"/>
             <Spinner
-                android:layout_width="30dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="300dp"
                 android:translationY="-40dp"
                 android:focusable="false"
                 android:id="@+id/spinner1"/>
@@ -261,7 +274,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_below="@+id/h14"
+            android:layout_below="@+id/h15"
             android:textSize="20dp"
             android:text="sign up"
             android:background="@drawable/round_btn"
@@ -300,6 +313,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="10dp"/>
         </RelativeLayout>
+
     </RelativeLayout>
 
 </ScrollView>

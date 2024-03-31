@@ -78,12 +78,11 @@ public class Registeration2 extends AppCompatActivity {
                 String selectedOption = options[position];
 
                 if (selectedOption!=options[0]){
-                    otype.setText(selectedOption);
+
                     Toast.makeText(Registeration2.this, "type is selected", Toast.LENGTH_SHORT).show();
                     if (selectedOption.equals(options[6])){
-                        otype.setText(null);
+
                         otype.setFocusable(true);
-                        otype.setFocusableInTouchMode(true);
 
                     }
                 }
@@ -115,7 +114,7 @@ public class Registeration2 extends AppCompatActivity {
                 String license=lc.getText().toString();
                 String address=orgaddress.getText().toString();
                 String contact=ocontact.getText().toString();
-                String type=otype.getText().toString();
+                String type=spinner.getSelectedItem().toString();
                 String email=ouser.getText().toString();
                 String password=opass.getText().toString();
                 String cpassword=copass.getText().toString();
@@ -147,6 +146,9 @@ public class Registeration2 extends AppCompatActivity {
                     Toast.makeText(Registeration2.this, "Please re-enter your mobile no", Toast.LENGTH_SHORT).show();
                     ocontact.setError("Mobile no is not valid");
                     ocontact.requestFocus();
+
+                } else if (license.length()!=10) {
+                    Toast.makeText(Registeration2.this, "Please enter correct license no.", Toast.LENGTH_SHORT).show();
 
                 } else if (password.length() < 6) {
                     Toast.makeText(Registeration2.this, "Password should be at least 6 digits", Toast.LENGTH_SHORT).show();

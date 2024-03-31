@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class Details extends AppCompatActivity {
 
-    TextView Name,License,Address,Contact,Type,Email,Password;
+    TextView Name,License,Address,Contact,Type,Email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class Details extends AppCompatActivity {
         String name = intent.getStringExtra("Name");
         String contact=intent.getStringExtra("Contact");
         String email = intent.getStringExtra("Email");
-        String password=intent.getStringExtra("Password");
+
         String address=intent.getStringExtra("Address");
         String license=intent.getStringExtra("License");
         String type=intent.getStringExtra("Type");
@@ -39,7 +39,6 @@ public class Details extends AppCompatActivity {
         Name = findViewById(R.id.rName);
         Contact=findViewById(R.id.rContact);
         Email = findViewById(R.id.rEmail);
-        Password=findViewById(R.id.rPassword);
         Address=findViewById(R.id.rAddress);
         License=findViewById(R.id.rLicense);
         Type=findViewById(R.id.rType);
@@ -48,7 +47,7 @@ public class Details extends AppCompatActivity {
         Name.setText(name);
         Contact.setText(contact);
         Email.setText(email);
-        Password.setText(password);
+
         Address.setText(address);
         License.setText(license);
         Type.setText(type);

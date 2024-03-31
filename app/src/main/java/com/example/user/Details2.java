@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class Details2 extends AppCompatActivity {
 
-    TextView Name,Contact,Address,Email,Password,City,State,Postal,Dob,Occ,Field;
+    TextView Name,Contact,Address,Email,Gender,City,State,Postal,Dob,Occ,Field;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +17,8 @@ public class Details2 extends AppCompatActivity {
         Name=findViewById(R.id.rName);
         Contact=findViewById(R.id.rContact);
         Address=findViewById(R.id.rAddress);
+        Gender=findViewById(R.id.rGender);
         Email=findViewById(R.id.rEmail);
-        Password=findViewById(R.id.rPassword);
         City=findViewById(R.id.rCity);
         State=findViewById(R.id.rState);
         Postal=findViewById(R.id.rCode);
@@ -30,6 +30,7 @@ public class Details2 extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("Name");
         String contact=intent.getStringExtra("Contact");
+        String gender=intent.getStringExtra("Gender");
         String email = intent.getStringExtra("Email");
         String password=intent.getStringExtra("Password");
         String address=intent.getStringExtra("Address");
@@ -38,12 +39,12 @@ public class Details2 extends AppCompatActivity {
         String postal=intent.getStringExtra("Postal");
         String dob=intent.getStringExtra("Dob");
         String occupation=intent.getStringExtra("Occupation");
-        String type=intent.getStringExtra("Type");
+        String type=intent.getStringExtra("Field");
 
         Name.setText(name);
         Contact.setText(contact);
+        Gender.setText(gender);
         Email.setText(email);
-        Password.setText(password);
         Address.setText(address);
         City.setText(city);
         State.setText(state);

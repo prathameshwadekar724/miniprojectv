@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends AppCompatActivity  {
 
-    TextView pname,pcontact,paddress,pusername,ppassword,pcity,pstate,postal,pdob,pocc,field;
+    TextView pname,pcontact,paddress,pusername,gender,pcity,pstate,postal,pdob,pocc,field;
     TextView titleName;
     ProgressBar progressBar;
     FirebaseAuth auth;
@@ -38,8 +38,8 @@ public class Profile extends AppCompatActivity  {
         pname=findViewById(R.id.nam_user);
         pcontact=findViewById(R.id.cont_user);
         paddress=findViewById(R.id.add_user);
+        gender=findViewById(R.id.pass_user);
         pusername=findViewById(R.id.username_user);
-        ppassword=findViewById(R.id.pass_user);
         pcity=findViewById(R.id.city_user);
         pstate=findViewById(R.id.state_user);
         postal=findViewById(R.id.pos_user);
@@ -78,8 +78,8 @@ public class Profile extends AppCompatActivity  {
                     String Name=userDetail.Name;
                     String Contact=userDetail.Contact;
                     String Address=userDetail.Address;
+                    String Gender=userDetail.Gender;
                     String Email=firebaseUser.getEmail();
-                    String Password=userDetail.Password;
                     String City=userDetail.City;
                     String State=userDetail.State;
                     String Postal=userDetail.Postal;
@@ -92,8 +92,8 @@ public class Profile extends AppCompatActivity  {
                     pname.setText(Name);
                     pcontact.setText(Contact);
                     paddress.setText(Address);
+                    gender.setText(Gender);
                     pusername.setText(Email);
-                    ppassword.setText(Password);
                     pcity.setText(City);
                     pstate.setText(State);
                     postal.setText(Postal);

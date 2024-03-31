@@ -1,59 +1,58 @@
 package com.example.user;
 
 public class Data {
-    private String imageUrl, caption, key, name;
+    private String ImageUrl,PostName, Key, Name,Description;
 
-    private int like;
 
     public Data() {
     }
 
-    public Data(String imageUrl, String caption, String key, String name) {
-        this.imageUrl = imageUrl;
-        this.caption = caption;
-        this.key = key;
-        this.name = name;
-        this.like = 0;
+    public Data(String imageUrl, String postName, String key, String name, String description) {
+        ImageUrl = imageUrl;
+        PostName = postName;
+        Key = key;
+        Name = name;
+        Description = description;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return ImageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        ImageUrl = imageUrl;
     }
 
-    public String getCaption() {
-        return caption;
+    public String getPostName() {
+        return PostName;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setPostName(String postName) {
+        PostName = postName;
     }
 
     public String getKey() {
-        return key;
+        return Key;
     }
 
     public void setKey(String key) {
-        this.key = key;
+        Key = key;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
-    public int getLike() {
-        return like;
+    public String getDescription() {
+        return Description;
     }
 
-    public void setLike(int like) {
-        this.like = like;
+    public void setDescription(String description) {
+        Description = description;
     }
 }
 

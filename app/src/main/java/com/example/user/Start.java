@@ -20,7 +20,6 @@ public class Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        select=findViewById(R.id.select);
 
 
 

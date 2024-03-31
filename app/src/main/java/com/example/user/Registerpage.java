@@ -36,16 +36,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Registerpage extends AppCompatActivity {
 
 
-    EditText eName,eContact,eEmail,ePassword,ecpassword,eaddress,ecity,estate,pcode,edob,eoccupation,efield;
+    EditText eName,eContact,Gender,eEmail,ePassword,ecpassword,eaddress,ecity,estate,pcode,edob,eoccupation,efield;
     Button signUp;
     TextView signIn;
-    Spinner spinner;
 
     private ProgressBar progressBar;
     private DatePickerDialog picker;
@@ -63,6 +63,7 @@ public class Registerpage extends AppCompatActivity {
         eName=findViewById(R.id.name);
         eContact=findViewById(R.id.contact);
         eaddress=findViewById(R.id.address);
+        Gender=findViewById(R.id.gender);
         eEmail = findViewById(R.id.Email);
         ePassword = findViewById(R.id.password);
         ecpassword = findViewById(R.id.c_password);
@@ -84,10 +85,19 @@ public class Registerpage extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
 
+
+
                 picker=new DatePickerDialog(Registerpage.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        edob.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                        Calendar birthDate = Calendar.getInstance();
+                        birthDate.set(year, month, dayOfMonth);
+                        Calendar currentDate = Calendar.getInstance();
+                        int age = currentDate.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+                        if (currentDate.get(Calendar.DAY_OF_YEAR) < birthDate.get(Calendar.DAY_OF_YEAR)) {
+                            age--;
+                        }
+                        edob.setText(String.valueOf(age+ " Years"));
                     }
                 },year,month,day);
                 picker.show();
@@ -113,19 +123,22 @@ public class Registerpage extends AppCompatActivity {
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 String selectedOption = options[position];
 
                 if (selectedOption!=options[0]){
-                    eoccupation.setText(selectedOption);
+
                     Toast.makeText(Registerpage.this,"Occupation is selected",Toast.LENGTH_SHORT).show();
                     if (selectedOption.equals(options[5])){
-                        eoccupation.setText(null);
+
                         eoccupation.setFocusable(true);
-                        eoccupation.setFocusableInTouchMode(true);
+
                         Toast.makeText(Registerpage.this, "Enter Your Occupation", Toast.LENGTH_SHORT).show();
                     }
+
                 }
                 else {
                     eoccupation.setText(null);
@@ -139,24 +152,18 @@ public class Registerpage extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedOption1 = options1[position];
 
                 if (selectedOption1!=options1[0]){
-                    efield.setText(selectedOption1);
                     Toast.makeText(Registerpage.this,"area of interest is selected",Toast.LENGTH_SHORT).show();
                     if (selectedOption1.equals(options1[6])){
                         efield.setText(null);
                         efield.setFocusable(true);
-                        efield.setFocusableInTouchMode(true);
                         Toast.makeText(Registerpage.this, "Enter Your Interest", Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
                     efield.setText(null);
@@ -184,14 +191,18 @@ public class Registerpage extends AppCompatActivity {
                 Intent intent = new Intent(Registerpage.this,MainActivity.class);
                 startActivity(intent);
                 finish();
+
             }
+
         });
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name=eName.getText().toString();
                 String contact=eContact.getText().toString();
                 String address=eaddress.getText().toString();
+                String gender=Gender.getText().toString();
                 String email=eEmail.getText().toString();
                 String password=ePassword.getText().toString();
                 String cpassword=ecpassword.getText().toString();
@@ -199,13 +210,16 @@ public class Registerpage extends AppCompatActivity {
                 String state=estate.getText().toString();
                 String postal=pcode.getText().toString();
                 String dob=edob.getText().toString();
-                String occupation=eoccupation.getText().toString();
-                String field =efield.getText().toString();
+                String occupation=spinner.getSelectedItem().toString();
+                String field =spinner1.getSelectedItem().toString();
+
 
                 String mobile="[6-9][0-9]{9}";
                 Matcher mobilematcher;
                 Pattern pattern=Pattern.compile(mobile);
                 mobilematcher=pattern.matcher(contact);
+
+
 
 
                 if (name.isEmpty() || contact.isEmpty() || email.isEmpty() || password.isEmpty())
@@ -249,7 +263,7 @@ public class Registerpage extends AppCompatActivity {
                                 Toast.makeText(Registerpage.this, "User registered successfully", Toast.LENGTH_SHORT).show();
                                 FirebaseUser firebaseUser=auth.getCurrentUser();
 
-                                UserDetail detail=new UserDetail(name,contact,address,email,password,city,state,postal,dob,occupation,field);
+                                UserDetail detail=new UserDetail(name,contact,address,gender,email,password,city,state,postal,dob,occupation,field);
 
                                 databaseReference.child("Users").child(firebaseUser.getUid()).setValue(detail).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
