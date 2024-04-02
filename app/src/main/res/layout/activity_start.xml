@@ -46,34 +46,38 @@
             android:layout_marginTop="10dp"
             android:focusable="false"
             android:id="@+id/spinner"/>
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:id="@+id/m2"
-            android:layout_marginStart="50dp"
-            android:background="@mipmap/ic_launcher"/>
-        <TextView
+        android:orientation="vertical"
+        android:layout_marginTop="200dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:textSize="54dp"
-            android:text="V-VIBE"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="50dp"
-            android:textColor="@color/purple_700"
-            android:textStyle="bold"
-            />
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/m2"
+                android:layout_marginStart="50dp"
+                android:background="@mipmap/ic_launcher"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="54dp"
+                android:text="V-VIBE"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="50dp"
+                android:textColor="@color/purple_700"
+                android:textStyle="bold"
+                />
 
+        </LinearLayout>
 
     </LinearLayout>
-
-
 
 
 

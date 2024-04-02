@@ -2,11 +2,15 @@ package com.example.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -17,13 +21,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Vlist extends AppCompatActivity {
 
     ProgressBar progressBar;
+    Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<Information> dataList;
     ArrayList<Ratings> ratings;
@@ -38,6 +45,8 @@ public class Vlist extends AppCompatActivity {
         setContentView(R.layout.activity_vlist);
 
         progressBar=findViewById(R.id.progressbar);
+        toolbar = findViewById(R.id.toolb);
+        setSupportActionBar(toolbar);
 
         recyclerView=findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -73,22 +82,7 @@ public class Vlist extends AppCompatActivity {
             }
         });
 
-        reference.child(current).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ratings.clear();
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Ratings ratings1=dataSnapshot.getValue(Ratings.class);
-                    ratings.add(ratings1);
-                }
-                adapter.sortAscending();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         adapter.setOnItemClickListener(new MyAdapter7.OnItemClickListener() {
             @Override
@@ -111,8 +105,61 @@ public class Vlist extends AppCompatActivity {
             }
         });
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search,menu);
+        MenuItem menuItem=menu.findItem(R.id.search);
+        SearchView searchView=(SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Search Here");
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchOrganizations(query);
+                recyclerView.setVisibility(View.VISIBLE);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchOrganizations(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void searchOrganizations(String SearchText) {
+
+        Query query=databaseReference.orderByChild("Name");
+
+        String search=SearchText.toLowerCase(Locale.getDefault());
+        dataList.clear();
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+                for(DataSnapshot childSnapshot:snapshot.getChildren()){
+                    Information user = childSnapshot.getValue(Information.class);
+                    String lowerCase = user.getName().toLowerCase(Locale.getDefault());
+                    if (lowerCase.contains(search)) {
+
+                        dataList.add(user);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }

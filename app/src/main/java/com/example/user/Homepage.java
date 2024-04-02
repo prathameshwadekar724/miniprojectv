@@ -52,14 +52,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
     TextView uname,user;
     ProgressBar progressBar;
 
-
-    RecyclerView recyclerView;
-
-    MyAdapter2 adapter2;
-    ArrayList<Information> info;
-
-    FloatingActionButton floatingActionButton;
-
     RecyclerView recyclerView1;
     ArrayList<Data> dataList;
     MyAdapter adapter;
@@ -67,9 +59,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
     final private DatabaseReference databaseReference1= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
 
-
-
-    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
 
 
     @Override
@@ -88,14 +77,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         user = headerView.findViewById(R.id.fuser);
         progressBar=findViewById(R.id.progressbar);
 
-        recyclerView=findViewById(R.id.list);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        info=new ArrayList<>();
-
-        adapter2=new MyAdapter2(info);
-        recyclerView.setAdapter(adapter2);
 
 
 
@@ -280,16 +261,13 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             public boolean onQueryTextSubmit(String query) {
 
                 searchOrganizations(query);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView1.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchOrganizations(newText);
-                recyclerView.setVisibility(View.GONE);
-                recyclerView1.setVisibility(View.VISIBLE);
                 return false;
 
             }
@@ -302,18 +280,24 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
 
     private void searchOrganizations(String searchText) {
-        Query query = databaseReference.orderByChild("Name").equalTo(searchText);
+        Query query = databaseReference1.orderByChild("name");
 
+
+        String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
+        dataList.clear();
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                info.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Information organization = snapshot.getValue(Information.class);
-                    info.add(organization);
+                dataList.clear();
+                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                    Data organization = childSnapshot.getValue(Data.class);
+                    String orgNameLowercase = organization.getPostName().toLowerCase(Locale.getDefault());
+                    if (orgNameLowercase.contains(searchTextLowercase)) {
+                        dataList.add(organization);
+                    }
                 }
-                adapter2.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
 
             }

@@ -1,6 +1,7 @@
 package com.example.user;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
     private ArrayList<Information> data;
     private Context context;
 
-    private ArrayList<Ratings> ratingsList;
+    private ArrayList<Ratings> ratings;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -41,9 +42,9 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         mListener = listener;
     }
 
-    public MyAdapter7(ArrayList<Information> data,ArrayList<Ratings> ratingsList ,Context context) {
+    public MyAdapter7(ArrayList<Information> data,ArrayList<Ratings> ratings,Context context) {
         this.data = data;
-        this.ratingsList=ratingsList;
+        this.ratings=ratings;
         this.context = context;
     }
 
@@ -60,11 +61,12 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         holder.Name.setText(information.getName());
         holder.Email.setText(information.getEmail());
 
-        FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         String current=firebaseUser.getUid();
-
         String user=information.getName();
         holder.getRatings(current,user);
+
+
 
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -83,27 +85,6 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         return data.size();
     }
 
-    public void sortAscending() {
-        Collections.sort(data, new Comparator<Information>() {
-            @Override
-            public int compare(Information o1, Information o2) {
-                float rating1 = getRatingForUser(o1.getName());
-                float rating2 = getRatingForUser(o2.getName());
-                return Float.compare(rating1, rating2);
-            }
-        });
-        notifyDataSetChanged();
-    }
-
-    // Method to get rating for a specific user
-    private float getRatingForUser(String userName) {
-        for (Ratings rating : ratingsList) {
-            if (rating.getName().equals(userName)) {
-                return rating.getRating();
-            }
-        }
-        return 0; // Default rating if user's rating is not found
-    }
 
     public class MyViewHolder7 extends RecyclerView.ViewHolder{
 
@@ -144,6 +125,7 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
                                 }
 
                             }
+
                         }
 
                     }

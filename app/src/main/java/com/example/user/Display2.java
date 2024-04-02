@@ -52,7 +52,6 @@ public class Display2 extends AppCompatActivity {
         Intent intent=getIntent();
 
 
-        String postKey=intent.getStringExtra("key");
         String name=intent.getStringExtra("OrgName");
 
 
