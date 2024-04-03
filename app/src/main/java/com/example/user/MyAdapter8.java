@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,7 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
             super(itemView);
             name=itemView.findViewById(R.id.vName);
             rating=itemView.findViewById(R.id.vRate);
+
         }
 
         public void getRatings(String current, String name1) {
@@ -93,5 +95,6 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
                 }
             });
         }
+
     }
 }

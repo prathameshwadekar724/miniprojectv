@@ -91,7 +91,10 @@ public class OrganisationHome extends AppCompatActivity implements NavigationVie
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
         else {
-            checkIfEmailverified(firebaseUser);
+
+            if (!firebaseUser.isEmailVerified()){
+                showAlertDialog();
+            }
             progressBar.setVisibility(View.VISIBLE);
             showDetail(firebaseUser);
         }
@@ -163,12 +166,7 @@ public class OrganisationHome extends AppCompatActivity implements NavigationVie
 
     }
 
-    private void checkIfEmailverified(FirebaseUser firebaseUser) {
-        if (!firebaseUser.isEmailVerified()){
-            showAlertDialog();
-        }
 
-    }
 
     private void showAlertDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(OrganisationHome.this);
@@ -247,7 +245,7 @@ public class OrganisationHome extends AppCompatActivity implements NavigationVie
             startActivity(intent);
 
         } else if (ID == R.id.onList) {
-            Intent intent=new Intent(OrganisationHome.this, organisationuser.class);
+            Intent intent=new Intent(OrganisationHome.this, Olist.class);
             startActivity(intent);
         } else if (ID == R.id.n_delete) {
             Intent intent=new Intent(OrganisationHome.this, leaderboard.class);

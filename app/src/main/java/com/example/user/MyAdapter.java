@@ -71,6 +71,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         final String userid=firebaseUser.getUid();
         final String postkey=current.getKey();
+        final String postName= current.getPostName();
 
         holder.getLikeStatus(postkey,userid);
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts").child("Likes");
@@ -103,14 +104,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         });
 
+
         holder.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-               sendApplyMessageToOrganisation(current.getName(),postkey,userid);
-               Toast.makeText(context, "Submitted", Toast.LENGTH_SHORT).show();
-
-
+                holder.sendApplyMessageToOrganisation(current.getName(),postkey,userid,postName);
+                Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -119,40 +118,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     }
 
-    private void sendApplyMessageToOrganisation(String oName,String postKey,String userID) {
-
-        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-
-        usersReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    String vName=snapshot.child("Name").getValue(String.class);
-                    String address=snapshot.child("City").getValue(String.class);
-                    String email=snapshot.child("Email").getValue(String.class);
-                    String type=snapshot.child("Field").getValue(String.class);
-                    DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts").child("Applied");
-                    Message message=new Message(vName,oName,"I want to apply",postKey,address,email,type,userID);
-                    reference.child(postKey).child(userID).setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     @Override
@@ -161,7 +126,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView recycleImage;
         TextView eName, pName,desc;
@@ -209,6 +174,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                     }
 
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        public void sendApplyMessageToOrganisation(String oName, String postKey, String userID,String postName) {
+            DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+
+            usersReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        String vName=snapshot.child("Name").getValue(String.class);
+                        String address=snapshot.child("City").getValue(String.class);
+                        String email=snapshot.child("Email").getValue(String.class);
+                        String type=snapshot.child("Field").getValue(String.class);
+                        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts").child("Applied");
+                        Message message=new Message(vName,oName,"I want to apply",postKey,address,email,type,userID,postName);
+                        reference.child(postKey).child(userID).setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            }
+                        });
+                    }
                 }
 
                 @Override

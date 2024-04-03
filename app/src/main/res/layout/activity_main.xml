@@ -46,7 +46,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/v3"
         android:id="@+id/v4"
         app:passwordToggleEnabled="true"
@@ -70,23 +70,13 @@
         android:textSize="20dp"
         android:text="Sign In"
         android:background="@drawable/round_btn"
-        android:layout_marginTop="50dp"/>
-    <Button
-        android:id="@+id/forgot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_below="@id/sign_in"
-        android:textSize="20dp"
-        android:text="Forgot Password"
-        android:background="@drawable/round_btn"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="60dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/forgot"
+        android:layout_below="@+id/sign_in"
         android:layout_marginTop="40dp"
         android:layout_marginStart="50dp">
         <TextView

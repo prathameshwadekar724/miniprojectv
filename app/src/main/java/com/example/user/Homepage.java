@@ -53,12 +53,7 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
     ProgressBar progressBar;
 
 
-    RecyclerView recyclerView;
 
-    MyAdapter2 adapter2;
-    ArrayList<Information> info;
-
-    FloatingActionButton floatingActionButton;
 
     RecyclerView recyclerView1;
     ArrayList<Data> dataList;
@@ -67,9 +62,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
     final private DatabaseReference databaseReference1= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
 
-
-
-    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
 
 
     @Override
@@ -88,18 +80,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
         user = headerView.findViewById(R.id.fuser);
         progressBar=findViewById(R.id.progressbar);
 
-        recyclerView=findViewById(R.id.list);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        info=new ArrayList<>();
-
-        adapter2=new MyAdapter2(info);
-        recyclerView.setAdapter(adapter2);
-
-
-
-
 
         auth=FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=auth.getCurrentUser();
@@ -109,7 +89,9 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }
         else {
-            checkIfEmailverified(firebaseUser);
+            if (!firebaseUser.isEmailVerified()){
+                showAlertDialog();
+            }
             progressBar.setVisibility(View.VISIBLE);
             showDetail(firebaseUser);
         }
@@ -162,11 +144,6 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
     }
 
 
-    private void checkIfEmailverified(FirebaseUser firebaseUser) {
-        if (!firebaseUser.isEmailVerified()){
-            showAlertDialog();
-        }
-    }
 
     private void showAlertDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(Homepage.this);
@@ -280,15 +257,12 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             public boolean onQueryTextSubmit(String query) {
 
                 searchOrganizations(query);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView1.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchOrganizations(newText);
-                recyclerView.setVisibility(View.GONE);
                 recyclerView1.setVisibility(View.VISIBLE);
                 return false;
 
@@ -302,26 +276,26 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
 
 
     private void searchOrganizations(String searchText) {
-        Query query = databaseReference.orderByChild("name");
+        Query query = databaseReference1.orderByChild("postName");
 
 
         String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
-        info.clear();
+        dataList.clear();
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                info.clear();
+                dataList.clear();
 
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                    Information organization = childSnapshot.getValue(Information.class);
-                    String orgNameLowercase = organization.getName().toLowerCase(Locale.getDefault());
-                    if (orgNameLowercase.contains(searchTextLowercase)) {
+                    Data post = childSnapshot.getValue(Data.class);
+                    String postNameLowercase = post.getPostName().toLowerCase(Locale.getDefault());
+                    if (postNameLowercase.contains(searchTextLowercase)) {
 
-                        info.add(organization);
+                        dataList.add(post);
                     }
                 }
-                adapter2.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
 
             }

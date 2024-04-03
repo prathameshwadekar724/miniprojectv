@@ -95,9 +95,15 @@
                 android:id="@+id/gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Gender"
+                android:focusable="false"
                 android:textColor="@color/white"
                 android:inputType="text"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:translationY="-40dp"
+                android:focusable="false"
+                android:id="@+id/spinner2"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

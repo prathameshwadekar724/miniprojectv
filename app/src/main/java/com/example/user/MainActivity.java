@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReferenceFromUrl("https://user-4d03f-default-rtdb.firebaseio.com/");
     private FirebaseAuth auth;
-    private Button forgot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         signIn = findViewById(R.id.sign_in);
         signUp =findViewById(R.id.sign_up);
         progressBar=findViewById(R.id.progressbar);
-        forgot=findViewById(R.id.forgot);
+
 
         auth=FirebaseAuth.getInstance();
 

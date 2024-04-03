@@ -34,11 +34,12 @@ public class organisationuser extends AppCompatActivity {
 
     ProgressBar progressBar;
     RecyclerView recyclerView;
-    ArrayList<Data> dataList;
-    MyAdapter adapter;
+    ArrayList<Information> dataList;
+    MyAdapter2 adapter2;
     Toolbar toolbar;
 
-    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
+   // final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
+    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
 
 
 
@@ -59,10 +60,28 @@ public class organisationuser extends AppCompatActivity {
 
 
         dataList = new ArrayList<>();
-        adapter = new MyAdapter(dataList, this);
-        recyclerView.setAdapter(adapter);
+        adapter2 = new MyAdapter2(dataList);
+        recyclerView.setAdapter(adapter2);
 
+        progressBar.setVisibility(View.VISIBLE);
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Information information=dataSnapshot.getValue(Information.class);
+                    dataList.add(information);
+                }
+                adapter2.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(organisationuser.this, "Error", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
 
     }
@@ -78,14 +97,13 @@ public class organisationuser extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchPost(query);
-                recyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 searchPost(newText);
-                recyclerView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -93,7 +111,7 @@ public class organisationuser extends AppCompatActivity {
     }
 
     private void searchPost(String searchText) {
-        Query query = databaseReference.orderByChild("name");
+        Query query = databaseReference.orderByChild("Name");
 
 
         String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
@@ -104,14 +122,14 @@ public class organisationuser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
                 for(DataSnapshot childSnapshot:snapshot.getChildren()){
-                    Data post = childSnapshot.getValue(Data.class);
-                    String postNameLowercase = post.getPostName().toLowerCase(Locale.getDefault());
-                    if (postNameLowercase.contains(searchTextLowercase)) {
+                    Information information = childSnapshot.getValue(Information.class);
+                    String orgNameLowercase = information.getName().toLowerCase(Locale.getDefault());
+                    if (orgNameLowercase.contains(searchTextLowercase)) {
 
-                        dataList.add(post);
+                        dataList.add(information);
                     }
                 }
-                adapter.notifyDataSetChanged();
+                adapter2.notifyDataSetChanged();
 
             }
 

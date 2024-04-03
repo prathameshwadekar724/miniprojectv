@@ -38,6 +38,8 @@
                 android:text="Ratings"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
+
+
         </LinearLayout>
 
     </LinearLayout>

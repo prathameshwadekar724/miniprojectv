@@ -107,9 +107,11 @@ public class Registerpage extends AppCompatActivity {
 
         Spinner spinner = findViewById(R.id.spinner);
         Spinner spinner1 = findViewById(R.id.spinner1);
+        Spinner spinner2 = findViewById(R.id.spinner2);
 
         String[] options = {"Select Your Occupation","12th", "Diploma", "UG", "PG", "Others"};
         String[] options1 = {"Select Your Interest","Healthcare", "Education", "Animal Welfare", "Environment and Conservation","Social Service","Others"};
+        String[] options2 ={"Select YOur Gender","Male","Female"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -120,6 +122,12 @@ public class Registerpage extends AppCompatActivity {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner1.setAdapter(adapter1);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options2);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner2.setAdapter(adapter2);
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -180,6 +188,30 @@ public class Registerpage extends AppCompatActivity {
             }
         });
 
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedOption2 = options2[position];
+
+                if (selectedOption2!=options2[0]){
+                    Toast.makeText(Registerpage.this,"area of interest is selected",Toast.LENGTH_SHORT).show();
+                    if (selectedOption2.equals(options2[2])){
+                        Gender.setText(null);
+                        Gender.setFocusable(true);
+                        Toast.makeText(Registerpage.this, "Enter Your Interest", Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Gender.setText(null);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 

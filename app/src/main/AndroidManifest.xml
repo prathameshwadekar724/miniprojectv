@@ -15,6 +15,9 @@
         android:theme="@style/Theme.User"
         tools:targetApi="31">
         <activity
+            android:name=".EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".Vlist"
             android:exported="false" />
         <activity

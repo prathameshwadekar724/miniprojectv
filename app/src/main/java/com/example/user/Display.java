@@ -41,7 +41,7 @@ public class Display extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        floatingActionButton=findViewById(R.id.fab);
+
         progressBar=findViewById(R.id.Progressbar);
 
 

@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends AppCompatActivity  {
@@ -29,6 +30,7 @@ public class Profile extends AppCompatActivity  {
     TextView titleName;
     ProgressBar progressBar;
     FirebaseAuth auth;
+    Button edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class Profile extends AppCompatActivity  {
         pocc=findViewById(R.id.occupation_user);
         field=findViewById(R.id.field_user);
         titleName=findViewById(R.id.welcome);
+        edit=findViewById(R.id.edit);
         progressBar=findViewById(R.id.progressbar);
 
         auth=FirebaseAuth.getInstance();
@@ -60,6 +63,12 @@ public class Profile extends AppCompatActivity  {
         else {
             progressBar.setVisibility(View.VISIBLE);
             showDetail(firebaseUser);
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    passUserData(firebaseUser);
+                }
+            });
         }
 
 
@@ -110,6 +119,56 @@ public class Profile extends AppCompatActivity  {
             }
         });
 
+    }
+    private void passUserData(FirebaseUser firebaseUser){
+        String username=pusername.getText().toString().trim();
+        String id=firebaseUser.getUid();
+
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Users");
+
+        Query query=reference.orderByChild("Email").equalTo(username);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String name=snapshot.child(id).child("Name").getValue(String.class);
+                    String contact=snapshot.child(id).child("Contact").getValue(String.class);
+                    String address=snapshot.child(id).child("Address").getValue(String.class);
+                    String email=snapshot.child(id).child("Email").getValue(String.class);
+                    String city=snapshot.child(id).child("City").getValue(String.class);
+                    String state=snapshot.child(id).child("State").getValue(String.class);
+                    String code=snapshot.child(id).child("Postal").getValue(String.class);
+                    String age=snapshot.child(id).child("Dob").getValue(String.class);
+                    String occ=snapshot.child(id).child("Occupation").getValue(String.class);
+                    String interest=snapshot.child(id).child("Field").getValue(String.class);
+                    String gender=snapshot.child(id).child("Gender").getValue(String.class);
+                    String password=snapshot.child(id).child("Password").getValue(String.class);
+
+                    Intent intent=new Intent(Profile.this, EditProfile.class);
+
+                    intent.putExtra("Name",name);
+                    intent.putExtra("Contact",contact);
+                    intent.putExtra("Address",address);
+                    intent.putExtra("Email",email);
+                    intent.putExtra("City",city);
+                    intent.putExtra("State",state);
+                    intent.putExtra("Postal",code);
+                    intent.putExtra("Dob",age);
+                    intent.putExtra("Occupation",occ);
+                    intent.putExtra("Field",interest);
+                    intent.putExtra("Gender",gender);
+                    intent.putExtra("Password",password);
+
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

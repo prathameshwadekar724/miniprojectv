@@ -35,6 +35,7 @@ public class MyAdapter6 extends RecyclerView.Adapter<MyAdapter6.MyViewHolder6> {
         Msg info=data.get(position);
         holder.name.setText(info.getOrgName());
         holder.email.setText(info.getEmail());
+        holder.postName.setText(info.getPostName());
         holder.location.setText(info.getAddress());
         holder.type.setText(info.getType());
         holder.msg.setText(info.getMsg());
@@ -46,12 +47,13 @@ public class MyAdapter6 extends RecyclerView.Adapter<MyAdapter6.MyViewHolder6> {
     }
 
     public class MyViewHolder6 extends RecyclerView.ViewHolder{
-        TextView name,email,location,type,msg;
+        TextView name,email,postName,location,type,msg;
 
         public MyViewHolder6(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.mName);
             email=itemView.findViewById(R.id.mEmail);
+            postName=itemView.findViewById(R.id.postName);
             location=itemView.findViewById(R.id.mLocation);
             type=itemView.findViewById(R.id.mField);
             msg=itemView.findViewById(R.id.mMsg);

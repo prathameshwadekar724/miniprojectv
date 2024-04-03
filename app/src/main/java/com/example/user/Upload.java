@@ -40,7 +40,7 @@ public class Upload extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
-        floatingActionButton=findViewById(R.id.fab);
+
         progressBar=findViewById(R.id.Progressbar);
 
 

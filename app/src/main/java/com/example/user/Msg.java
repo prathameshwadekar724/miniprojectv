@@ -1,12 +1,12 @@
 package com.example.user;
 
 public class Msg   {
-    private String Name,UserEmail,OrgName,Msg,PostKey,Address,Email,Type,License,UserLocation,UserKey;
+    private String Name,UserEmail,OrgName,Msg,PostKey,Address,Email,Type,License,UserLocation,UserKey,PostName;
 
     public Msg() {
     }
 
-    public Msg(String name, String userEmail, String orgName, String msg, String postKey, String address, String email, String type, String license, String userLocation, String userKey) {
+    public Msg(String name, String userEmail, String orgName, String msg, String postKey, String address, String email, String type, String license, String userLocation, String userKey, String postName) {
         Name = name;
         UserEmail = userEmail;
         OrgName = orgName;
@@ -18,6 +18,7 @@ public class Msg   {
         License = license;
         UserLocation = userLocation;
         UserKey = userKey;
+        PostName = postName;
     }
 
     public String getName() {
@@ -106,5 +107,13 @@ public class Msg   {
 
     public void setUserKey(String userKey) {
         UserKey = userKey;
+    }
+
+    public String getPostName() {
+        return PostName;
+    }
+
+    public void setPostName(String postName) {
+        PostName = postName;
     }
 }
