@@ -38,7 +38,7 @@ public class organisationuser extends AppCompatActivity {
     MyAdapter2 adapter2;
     Toolbar toolbar;
 
-   // final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
+    // final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Posts").child("Upload");
     final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
 
 
@@ -82,8 +82,21 @@ public class organisationuser extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
-
-
+        adapter2.setOnItemClickListener(new MyAdapter2.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Information clickedItem = dataList.get(position);
+                Intent intent=new Intent(organisationuser.this, Details.class);
+                intent.putExtra("Name",clickedItem.getName());
+                intent.putExtra("Contact",clickedItem.getContact());
+                intent.putExtra("Email",clickedItem.getEmail());
+                intent.putExtra("Password",clickedItem.getPassword());
+                intent.putExtra("Address",clickedItem.getAddress());
+                intent.putExtra("License",clickedItem.getLicense());
+                intent.putExtra("Type",clickedItem.getType());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -96,23 +109,36 @@ public class organisationuser extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchPost(query);
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchPost(newText);
+                String[] field = {"Name", "Address", "Type"};
+                if (!field[1].isEmpty()) {
+                    searchUser(newText, field[1]);
+                } else if (!field[0].isEmpty()) {
+                    searchUser(newText, field[0]);
+                } else if (!field[2].isEmpty()) {
+                    searchUser(newText, field[2]);
+                } else {
+                    searchUser(newText, field[2]); // Default to searching by "Type"
+                }
+
+
+
+
                 recyclerView.setVisibility(View.VISIBLE);
-                return false;
+                return true;
             }
         });
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void searchPost(String searchText) {
-        Query query = databaseReference.orderByChild("Name");
+    private void searchUser(String searchText,String field) {
 
+        Query query = databaseReference.orderByChild(field);
 
         String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
         dataList.clear();
@@ -123,11 +149,20 @@ public class organisationuser extends AppCompatActivity {
                 dataList.clear();
                 for(DataSnapshot childSnapshot:snapshot.getChildren()){
                     Information information = childSnapshot.getValue(Information.class);
-                    String orgNameLowercase = information.getName().toLowerCase(Locale.getDefault());
-                    if (orgNameLowercase.contains(searchTextLowercase)) {
+                    String fieldValueLowercase = null;
+                    if (field=="Name"){
+                        fieldValueLowercase = information.getName().toLowerCase(Locale.getDefault());
+                    } else if (field=="Address") {
+                        fieldValueLowercase = information.getAddress().toLowerCase(Locale.getDefault());
+                    }
+                    else if(field=="Type"){
+                        fieldValueLowercase = information.getType().toLowerCase(Locale.getDefault());
+                    }
 
+                    if (fieldValueLowercase.contains(searchTextLowercase)) {
                         dataList.add(information);
                     }
+
                 }
                 adapter2.notifyDataSetChanged();
 

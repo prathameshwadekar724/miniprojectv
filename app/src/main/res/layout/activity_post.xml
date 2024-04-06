@@ -65,6 +65,8 @@
                 android:layout_weight="0.6"
                 android:padding="16dp"
                 android:hint="Event Description"
+                android:inputType="textMultiLine"
+                android:maxLines="7"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"/>
 

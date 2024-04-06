@@ -2,11 +2,15 @@ package com.example.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -15,14 +19,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Olist extends AppCompatActivity {
 
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    Toolbar toolbar;
     ArrayList<Information> dataList;
     MyAdapter1 adapter;
 
@@ -35,6 +42,10 @@ public class Olist extends AppCompatActivity {
         setContentView(R.layout.activity_olist);
 
         progressBar = findViewById(R.id.progressbar);
+
+        toolbar = findViewById(R.id.toolb);
+        setSupportActionBar(toolbar);
+
 
 
         recyclerView = findViewById(R.id.recyclerview);
@@ -81,6 +92,95 @@ public class Olist extends AppCompatActivity {
             }
         });
 
+
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search,menu);
+        MenuItem menuItem=menu.findItem(R.id.search);
+        SearchView searchView=(SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Search Here");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String []field={"Name","Address","Type"};
+                for(int i=0;i<field.length;i++){
+                    searchUser(newText,field[i]);
+                }
+
+                recyclerView.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void searchUser(String searchText,String field) {
+
+        Query query=null;
+        switch(field) {
+            case "Name":
+                query = databaseReference.orderByChild("Name");
+                break;
+            case "Address":
+                query = databaseReference.orderByChild("Address");
+                break;
+            case "Type":
+                query =databaseReference.orderByChild("Type");
+                break;
+            default :
+                query = databaseReference.orderByChild("Type");
+                break;
+
+
+        }
+
+
+        String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
+        dataList.clear();
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+                for(DataSnapshot childSnapshot:snapshot.getChildren()){
+                    Information information = childSnapshot.getValue(Information.class);
+                    String fieldValueLowercase=null;
+                    switch(field) {
+                        case "Name":
+                            fieldValueLowercase = information.getName().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Address":
+                            fieldValueLowercase = information.getAddress().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Type":
+                            fieldValueLowercase =information.getType().toLowerCase(Locale.getDefault());
+                            break;
+                        default:
+                            fieldValueLowercase = information.getType().toLowerCase(Locale.getDefault());
+                            break;
+
+                    }
+                    if (fieldValueLowercase.contains(searchTextLowercase)) {
+                        dataList.add(information);
+                    }
+
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 }

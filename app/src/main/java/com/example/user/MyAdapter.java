@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,12 +109,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.sendApplyMessageToOrganisation(current.getName(),postkey,userid,postName);
-                Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
+                holder.editText.setVisibility(View.VISIBLE);
+                holder.send.setVisibility(View.VISIBLE);
+
+                holder.send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.sendApplyMessageToOrganisation(current.getName(),postkey,userid,postName);
+
+                        Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
+
+                        holder.editText.setVisibility(View.GONE);
+                        holder.send.setVisibility(View.GONE);
+                    }
+                });
+
+
 
             }
 
         });
+
+
 
 
     }
@@ -135,7 +152,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         TextView like;
 
         CardView cardView;
-        Button submit;
+        EditText editText;
+        Button submit,send;
         DatabaseReference databaseReference;
 
         public MyViewHolder(@NonNull View view) {
@@ -147,7 +165,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             desc=view.findViewById(R.id.rDesc);
             like_btn = view.findViewById(R.id.like);
             like = view.findViewById(R.id.rLike);
+            editText=view.findViewById(R.id.applyMessage);
             submit = view.findViewById(R.id.bSubmit);
+            send=view.findViewById(R.id.send);
+
+            editText.setVisibility(View.GONE);
+            send.setVisibility(View.GONE);
 
 
         }
@@ -184,6 +207,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
 
         public void sendApplyMessageToOrganisation(String oName, String postKey, String userID,String postName) {
+            String applyMessage = editText.getText().toString().trim();
             DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
 
             usersReference.addValueEventListener(new ValueEventListener() {
@@ -195,7 +219,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         String email=snapshot.child("Email").getValue(String.class);
                         String type=snapshot.child("Field").getValue(String.class);
                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts").child("Applied");
-                        Message message=new Message(vName,oName,"I want to apply",postKey,address,email,type,userID,postName);
+                        Message message=new Message(vName,oName,applyMessage,postKey,address,email,type,userID,postName);
                         reference.child(postKey).child(userID).setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {

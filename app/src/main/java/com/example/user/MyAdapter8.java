@@ -46,7 +46,7 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
         String current=firebaseUser.getUid();
 
         String user=information.getName();
-        holder.getRatings(current,user);
+        holder.getRatings(user);
 
 
     }
@@ -66,26 +66,23 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
 
         }
 
-        public void getRatings(String current, String name1) {
-            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Posts").child("Ratings");
+        public void getRatings( String name1) {
+            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Ratings").child(name1);
 
-            reference.child(current).addValueEventListener(new ValueEventListener() {
+            reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
+                        if (snapshot.child("rating").getValue() != null) {
+                            double rate = snapshot.child("rating").getValue(Double.class);
 
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Ratings ratings = dataSnapshot.getValue(Ratings.class);
-                            String Name=ratings.getName();
-                            if (ratings != null) {
-                                float rate=ratings.getRating();
-                                if (name1.equals(Name)){
-                                    rating.setText(String.valueOf(rate));
-                                }
+                            rating.setText(String.valueOf(rate));
+                        } else {
 
-                            }
+                            rating.setText("0");
                         }
-
+                    }else {
+                        rating.setText("0");
                     }
                 }
 

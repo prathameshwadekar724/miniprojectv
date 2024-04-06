@@ -103,13 +103,13 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
         }
 
         public void getRating(String user,String userKey,String name) {
-            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Posts").child("Ratings");
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Ratings").child(name);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     float rating=(ratingBar.getRating());
                     Ratings ratings=new Ratings(user,userKey,name,rating);
-                    reference.child(user).child(userKey).setValue(ratings).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    reference.setValue(ratings).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(context, rating+ "  Stars", Toast.LENGTH_SHORT).show();
@@ -124,14 +124,14 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
 
                 }
             });
-            UpdateRatings(user,userKey);
+            UpdateRatings(name);
 
 
         }
 
-        private void UpdateRatings(String user,String key) {
-            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Posts").child("Ratings");
-            databaseReference.child(user).child(key).addValueEventListener(new ValueEventListener() {
+        private void UpdateRatings(String name) {
+            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Ratings").child(name);
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){

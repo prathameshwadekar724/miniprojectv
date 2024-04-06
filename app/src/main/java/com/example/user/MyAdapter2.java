@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,15 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
 
 
     private ArrayList<Information> data;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    private MyAdapter2.OnItemClickListener mListener;
+    public void setOnItemClickListener(MyAdapter2.OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public MyAdapter2(ArrayList<Information> data) {
         this.data = data;
@@ -43,7 +53,14 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
         holder.name.setText(information.getName());
         holder.username.setText(information.getEmail());
 
-
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -54,12 +71,15 @@ public class MyAdapter2 extends RecyclerView.Adapter<MyAdapter2.MyViewHolder2> {
     public class MyViewHolder2 extends RecyclerView.ViewHolder{
 
         TextView name,username;
+
+        CardView cardView;
         Button button;
 
         public MyViewHolder2(View view) {
             super(view);
             name=view.findViewById(R.id.pName);
             username=view.findViewById(R.id.pEmail);
+            cardView=view.findViewById(R.id.cardview);
 
         }
 

@@ -109,27 +109,26 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         }
 
         public void getRatings(String current,String name) {
-            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Posts").child("Ratings");
+            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Ratings").child(name);
 
-            reference.child(current).addValueEventListener(new ValueEventListener() {
+            reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Ratings ratings = dataSnapshot.getValue(Ratings.class);
-                            String Name=ratings.getName();
-                            if (ratings != null) {
-                                float rate=ratings.getRating();
-                                if (name.equals(Name)){
-                                    ratingBar.setRating(rate);
-                                }
+                        if (snapshot.child("rating").getValue() != null) {
+                            float rate = snapshot.child("rating").getValue(Float.class);
 
-                            }
+                            ratingBar.setRating((float) rate);
+                        } else {
 
+                            ratingBar.setRating(0);
                         }
-
+                    }else {
+                        ratingBar.setRating(0);
                     }
+
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {

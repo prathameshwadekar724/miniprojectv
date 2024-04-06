@@ -225,7 +225,11 @@ public class Homepage extends AppCompatActivity implements NavigationView.OnNavi
             Toast.makeText(this, "Opening Profile", Toast.LENGTH_SHORT).show();
 
 
-        } else if (ID == R.id.n_logout) {
+        }else if (ID == R.id.n_delete) {
+            Intent intent = new Intent(Homepage.this, leaderboard.class);
+            startActivity(intent);
+        }
+        else if (ID == R.id.n_logout) {
 
             auth.signOut();
             Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();

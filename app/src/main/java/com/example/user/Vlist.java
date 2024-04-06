@@ -117,26 +117,54 @@ public class Vlist extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchOrganizations(query);
-                recyclerView.setVisibility(View.VISIBLE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchOrganizations(newText);
-                return false;
+                String []field={"Name","Address","Field","Occupation","Dob","Gender"};
+                for (int i=0;i<field.length;i++){
+                    searchUser(newText,field[i]);
+                }
+
+                recyclerView.setVisibility(View.VISIBLE);
+                return true;
             }
         });
 
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void searchOrganizations(String SearchText) {
+    private void searchUser(String SearchText,String field) {
 
-        Query query=databaseReference.orderByChild("Name");
+        Query query=null;
+        switch(field) {
+            case "Name":
+                query = databaseReference.orderByChild("Name");
+                break;
+            case "Address":
+                query = databaseReference.orderByChild("Address");
+                break;
+            case "Field":
+                query = databaseReference.orderByChild("Field");
+                break;
+            case "Occupation" :
+                query = databaseReference.orderByChild("Occupation");
+                break;
+            case "Dob":
+                query =databaseReference.orderByChild("Dob");
+                break;
+            case "Gender":
+                query = databaseReference.orderByChild("Gender");
+                break;
+            default :
+                query = databaseReference.orderByChild("Gender");
+                break;
 
-        String search=SearchText.toLowerCase(Locale.getDefault());
+        }
+
+
+        String searchTextLowercase = SearchText.toLowerCase(Locale.getDefault());
         dataList.clear();
 
         query.addValueEventListener(new ValueEventListener() {
@@ -144,11 +172,34 @@ public class Vlist extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
                 for(DataSnapshot childSnapshot:snapshot.getChildren()){
-                    Information user = childSnapshot.getValue(Information.class);
-                    String lowerCase = user.getName().toLowerCase(Locale.getDefault());
-                    if (lowerCase.contains(search)) {
+                    Information information = childSnapshot.getValue(Information.class);
+                    String fieldValueLowercase = null;
+                    switch(field) {
+                        case "Name":
+                            fieldValueLowercase = information.getName().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Address":
+                            fieldValueLowercase = information.getAddress().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Field":
+                            fieldValueLowercase = information.getField().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Occupation":
+                            fieldValueLowercase = information.getOccupation().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Dob":
+                            fieldValueLowercase = information.getDob().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Gender":
+                            fieldValueLowercase = information.getGender().toLowerCase(Locale.getDefault());
+                            break;
+                        default:
+                            fieldValueLowercase = information.getGender().toLowerCase(Locale.getDefault());
+                            break;
 
-                        dataList.add(user);
+                    }
+                    if (fieldValueLowercase.contains(searchTextLowercase)) {
+                        dataList.add(information);
                     }
                 }
                 adapter.notifyDataSetChanged();
