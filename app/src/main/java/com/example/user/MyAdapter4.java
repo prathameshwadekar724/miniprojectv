@@ -24,12 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
 
     private ArrayList<Msg> data;
     private Context context;
-
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -43,6 +43,7 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
     public MyAdapter4(ArrayList<Msg> data, Context context) {
         this.data = data;
         this.context = context;
+
     }
 
     @NonNull
@@ -60,7 +61,11 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
 
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         String user=firebaseUser.getUid();
-        holder.getRating(user,msg.getUserKey(),msg.getName());
+        String userKey= msg.getUserKey();
+        String name= msg.getName();
+
+
+        holder.getRating(user,userKey,name,position);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +75,6 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
                 }
             }
         });
-
 
 
     }
@@ -98,12 +102,11 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
             ratingBar=itemView.findViewById(R.id.rating);
             button=itemView.findViewById(R.id.submit);
 
-
-
+            
         }
 
-        public void getRating(String user,String userKey,String name) {
-            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Ratings").child(name);
+        private void getRating(String user,String userKey,String name,int position) {
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Ratings").child(name).child(user);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,6 +116,10 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(context, rating+ "  Stars", Toast.LENGTH_SHORT).show();
+
+                            UpdateRatings(user, name, userKey);
+                            UpdateRatings(user,name,userKey);
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -121,25 +128,67 @@ public class MyAdapter4 extends RecyclerView.Adapter<MyAdapter4.MyViewHolder4> {
                         }
                     });
 
+                }
+
+            });
+            DatabaseReference reference1=FirebaseDatabase.getInstance().getReference("Ratings").child(name).child(user);
+            reference1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        for (DataSnapshot snapshot1:snapshot.getChildren()){
+                            float rate=snapshot.child("rating").getValue(Float.class);
+                            ratingBar.setRating(rate);
+                            ratingBar.setIsIndicator(true); // Set ratingBar indicator to true
+                            button.setEnabled(false); // Disable the button
+                            button.setText("Rating Submitted");
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-            UpdateRatings(name);
-
 
         }
 
-        private void UpdateRatings(String name) {
+        private void UpdateRatings(String user,String name,String userkey) {
             DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("Ratings").child(name);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
-                        Ratings ratings=snapshot.getValue(Ratings.class);
-                        if (ratings!=null){
-                            float update=ratings.getRating();
-                            ratingBar.setRating(update);
+                        int count=0;
+                        float update=0;
+                        for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                            Ratings ratings=dataSnapshot.getValue(Ratings.class);
+                            if (ratings!=null){
+                                update+=ratings.getRating();
+                                count++;
+
+                            }
+
                         }
+                        float average=update/count;
+
+                        databaseReference.child(user).child("Count").setValue(count);
+                        databaseReference.child(user).child("Total").setValue(update);
+                        databaseReference.child(user).child("Average").setValue(average);
+                        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Average").child(name);
+                        Average average1=new Average(name,average);
+                        reference.setValue(average1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
 
                     }
                 }

@@ -19,13 +19,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.protobuf.StringValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
 
-    private ArrayList<Information> data;
+    private ArrayList<Average> data;
     private Context context;
 
-    public MyAdapter8(ArrayList<Information> data, Context context) {
+    public MyAdapter8(ArrayList<Average> data, Context context) {
         this.data = data;
         this.context = context;
     }
@@ -39,7 +41,7 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter8.MyViewHolder8 holder, int position) {
-        Information information=data.get(position);
+        Average information=data.get(position);
         holder.name.setText(information.getName());
 
         FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
@@ -56,6 +58,7 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
         return data.size();
     }
 
+
     public class MyViewHolder8 extends RecyclerView.ViewHolder{
 
         TextView name,rating;
@@ -67,14 +70,14 @@ public class MyAdapter8 extends RecyclerView.Adapter<MyAdapter8.MyViewHolder8> {
         }
 
         public void getRatings( String name1) {
-            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Ratings").child(name1);
+            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Average").child(name1);
 
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        if (snapshot.child("rating").getValue() != null) {
-                            double rate = snapshot.child("rating").getValue(Double.class);
+                        if (snapshot.child("average").getValue() != null) {
+                            double rate = snapshot.child("average").getValue(Double.class);
 
                             rating.setText(String.valueOf(rate));
                         } else {

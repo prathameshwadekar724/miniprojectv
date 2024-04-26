@@ -29,7 +29,7 @@
                 <item android:id="@+id/n_profile"
                     android:title="Profile"
                     android:icon="@drawable/profile"/>
-                <item android:id="@+id/n_delete"
+                <item android:id="@+id/leaderboard"
                     android:title="LeaderBoard"
                     android:icon="@drawable/name3"/>
 

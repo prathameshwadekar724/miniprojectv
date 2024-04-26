@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,12 +15,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,32 +29,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class organisationuser extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class VolunteerList extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    Toolbar toolbar;
     FirebaseAuth auth;
 
     TextView uname,user;
-    Toolbar toolbar;
     ProgressBar progressBar;
     RecyclerView recyclerView;
     ArrayList<Information> dataList;
-    MyAdapter2 adapter2;
-
-    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Organisation");
-
-
+    MyAdapter7 adapter;
+    final private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("Users");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_organisationuser);
-
+        setContentView(R.layout.activity_volunteer_list2);
         drawerLayout = findViewById(R.id.lay_drw);
         navigationView = findViewById(R.id.view_nav);
         View headerView = navigationView.getHeaderView(0);
@@ -75,17 +66,17 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.setCheckedItem(R.id.onList);
-        progressBar = findViewById(R.id.progressbar);
+        navigationView.setCheckedItem(R.id.nList);
+        progressBar=findViewById(R.id.progressbar);
 
-        recyclerView = findViewById(R.id.recyclerview);
+
+        recyclerView=findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-        dataList = new ArrayList<>();
-        adapter2 = new MyAdapter2(dataList);
-        recyclerView.setAdapter(adapter2);
+        dataList=new ArrayList<>();
+        adapter=new MyAdapter7(dataList,this);
+        recyclerView.setAdapter(adapter);
 
         auth=FirebaseAuth.getInstance();
         FirebaseUser firebaseUser=auth.getCurrentUser();
@@ -102,49 +93,60 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
 
 
 
-
         progressBar.setVisibility(View.VISIBLE);
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Information information=dataSnapshot.getValue(Information.class);
-                    dataList.add(information);
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                        Information information=dataSnapshot.getValue(Information.class);
+                        dataList.add(information);
+                    }
+                    adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 }
-                adapter2.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(organisationuser.this, "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VolunteerList.this, "Error", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
             }
         });
-        adapter2.setOnItemClickListener(new MyAdapter2.OnItemClickListener() {
+
+
+
+        adapter.setOnItemClickListener(new MyAdapter7.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Information clickedItem = dataList.get(position);
-                Intent intent=new Intent(organisationuser.this, Details.class);
+                Information clickedItem=dataList.get(position);
+                Intent intent=new Intent(VolunteerList.this, Details2.class);
                 intent.putExtra("Name",clickedItem.getName());
                 intent.putExtra("Contact",clickedItem.getContact());
+                intent.putExtra("Gender",clickedItem.getGender());
                 intent.putExtra("Email",clickedItem.getEmail());
                 intent.putExtra("Password",clickedItem.getPassword());
                 intent.putExtra("Address",clickedItem.getAddress());
-                intent.putExtra("License",clickedItem.getLicense());
-                intent.putExtra("Type",clickedItem.getType());
+                intent.putExtra("City",clickedItem.getCity());
+                intent.putExtra("State",clickedItem.getState());
+                intent.putExtra("Postal",clickedItem.getPostal());
+                intent.putExtra("Dob",clickedItem.getDob());
+                intent.putExtra("Occupation",clickedItem.getOccupation());
+                intent.putExtra("Field",clickedItem.getField());
                 startActivity(intent);
             }
         });
+
     }
     private void showDetail(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
-        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Organisation");
         reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserDetail detail=snapshot.getValue(UserDetail.class);
+                OrgUserDetail detail=snapshot.getValue(OrgUserDetail.class);
                 if (detail!=null){
                     String Name=detail.Name;
                     String Email=firebaseUser.getEmail();
@@ -159,12 +161,10 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(organisationuser.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VolunteerList.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search,menu);
@@ -175,38 +175,54 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                String[] field = {"Name", "Address", "Type"};
-                if (!field[1].isEmpty()) {
-                    searchUser(newText, field[1]);
-                } else if (!field[0].isEmpty()) {
-                    searchUser(newText, field[0]);
-                } else if (!field[2].isEmpty()) {
-                    searchUser(newText, field[2]);
-                } else {
-                    searchUser(newText, field[2]); // Default to searching by "Type"
+                String []field={"Name","Address","Field","Occupation","Dob","Gender"};
+                for (int i=0;i<field.length;i++){
+                    searchUser(newText,field[i]);
                 }
-
-
-
 
                 recyclerView.setVisibility(View.VISIBLE);
                 return true;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void searchUser(String searchText,String field) {
+    private void searchUser(String SearchText,String field) {
 
-        Query query = databaseReference.orderByChild(field);
+        Query query=null;
+        switch(field) {
+            case "Name":
+                query = databaseReference.orderByChild("Name");
+                break;
+            case "Address":
+                query = databaseReference.orderByChild("Address");
+                break;
+            case "Field":
+                query = databaseReference.orderByChild("Field");
+                break;
+            case "Occupation" :
+                query = databaseReference.orderByChild("Occupation");
+                break;
+            case "Dob":
+                query =databaseReference.orderByChild("Dob");
+                break;
+            case "Gender":
+                query = databaseReference.orderByChild("Gender");
+                break;
+            default :
+                query = databaseReference.orderByChild("Gender");
+                break;
 
-        String searchTextLowercase = searchText.toLowerCase(Locale.getDefault());
+        }
+
+
+        String searchTextLowercase = SearchText.toLowerCase(Locale.getDefault());
         dataList.clear();
 
         query.addValueEventListener(new ValueEventListener() {
@@ -216,21 +232,35 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
                 for(DataSnapshot childSnapshot:snapshot.getChildren()){
                     Information information = childSnapshot.getValue(Information.class);
                     String fieldValueLowercase = null;
-                    if (field=="Name"){
-                        fieldValueLowercase = information.getName().toLowerCase(Locale.getDefault());
-                    } else if (field=="Address") {
-                        fieldValueLowercase = information.getAddress().toLowerCase(Locale.getDefault());
-                    }
-                    else if(field=="Type"){
-                        fieldValueLowercase = information.getType().toLowerCase(Locale.getDefault());
-                    }
+                    switch(field) {
+                        case "Name":
+                            fieldValueLowercase = information.getName().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Address":
+                            fieldValueLowercase = information.getAddress().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Field":
+                            fieldValueLowercase = information.getField().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Occupation":
+                            fieldValueLowercase = information.getOccupation().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Dob":
+                            fieldValueLowercase = information.getDob().toLowerCase(Locale.getDefault());
+                            break;
+                        case "Gender":
+                            fieldValueLowercase = information.getGender().toLowerCase(Locale.getDefault());
+                            break;
+                        default:
+                            fieldValueLowercase = information.getGender().toLowerCase(Locale.getDefault());
+                            break;
 
+                    }
                     if (fieldValueLowercase.contains(searchTextLowercase)) {
                         dataList.add(information);
                     }
-
                 }
-                adapter2.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
 
             }
 
@@ -243,37 +273,48 @@ public class organisationuser extends AppCompatActivity implements NavigationVie
     }
 
     @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+            super.onBackPressed();
+        }
+
+
+
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int ID = item.getItemId();
 
         if (ID == R.id.n_home) {
-            Intent intent=new Intent(organisationuser.this,Homepage.class);
+            Intent intent=new Intent(VolunteerList.this, OrganisationHome.class);
+            startActivity(intent);
+        } else if (ID == R.id.n_feed) {
+            Intent intent = new Intent(VolunteerList.this, Post.class);
             startActivity(intent);
         } else if (ID == R.id.n_no) {
-            Intent intent=new Intent(organisationuser.this,VNotification.class);
+            Intent intent=new Intent(VolunteerList.this, Notification.class);
             startActivity(intent);
+            Toast.makeText(this, "Open Notification", Toast.LENGTH_SHORT).show();
+        } else if (ID == R.id.n_profile) {
+            Intent intent=new Intent(VolunteerList.this, OrgProfile.class);
+            startActivity(intent);
+
         } else if (ID == R.id.nList) {
-            Intent intent=new Intent(organisationuser.this, Vlist.class);
-            startActivity(intent);
+
 
         } else if (ID == R.id.onList) {
-
-        } else if (ID == R.id.n_profile) {
-            Intent profile = new Intent(organisationuser.this, Profile.class);
-            startActivity(profile);
-            Toast.makeText(this, "Opening Profile", Toast.LENGTH_SHORT).show();
-
-
-        }else if (ID == R.id.leaderboard) {
-            Intent intent = new Intent(organisationuser.this, leaderboard_activity.class);
+            Intent intent=new Intent(VolunteerList.this, Olist.class);
             startActivity(intent);
-
-        }
-        else if (ID == R.id.n_logout) {
+        } else if (ID == R.id.leaderboard) {
+            Intent intent=new Intent(VolunteerList.this, leaderboard.class);
+            startActivity(intent);
+        } else if (ID == R.id.n_logout) {
 
             auth.signOut();
             Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(organisationuser.this, Start.class);
+            Intent intent = new Intent(VolunteerList.this, Start.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 

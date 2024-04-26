@@ -15,35 +15,44 @@
         android:theme="@style/Theme.User"
         tools:targetApi="31">
         <activity
+            android:name=".leaderboard_activity"
+            android:exported="false"
+            android:label="@string/title_activity_leaderboard"
+            android:theme="@style/Theme.User.NoActionBar"/>
+        <activity
+            android:name=".VolunteerList"
+            android:exported="false"
+            android:label="@string/title_activity_volunteer_list"
+            android:theme="@style/Theme.User.NoActionBar" />
+        <activity
             android:name=".EditProfile"
             android:exported="false" />
         <activity
             android:name=".Vlist"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_volunteer_list"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".leaderboard"
-            android:exported="false" />
-        <activity
-            android:name=".Leaderboard"
-            android:exported="false" />
-        <activity
-            android:name=".Leaderboar"
-            android:exported="false" />
-        <activity
-            android:name=".OrganisationHomePage"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_leaderboard"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Display2"
             android:exported="false" />
         <activity
             android:name=".VNotification"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Upload"
             android:exported="false" />
         <activity
             android:name=".Olist"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_orglist"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".MainActivity2"
             android:exported="false" />
@@ -58,16 +67,22 @@
             android:exported="false" />
         <activity
             android:name=".organisationuser"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_orglist"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".AdHome"
             android:exported="false" />
         <activity
             android:name=".OrgProfile"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_Profile"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".OrganisationHome"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_Home"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Registeration2"
             android:exported="false" />
@@ -84,9 +99,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Head"
-            android:exported="false" />
-        <activity
             android:name=".adminHompage"
             android:exported="false" />
         <activity
@@ -96,31 +108,28 @@
             android:name=".Admin"
             android:exported="false" />
         <activity
-            android:name=".login"
-            android:exported="false" />
-        <activity
             android:name=".Profile"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_Profile"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Notification"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Post"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/title_activity_post"
+            android:theme="@style/Theme.User.NoActionBar" />
         <activity
             android:name=".Registerpage"
             android:exported="false" />
         <activity
             android:name=".Homepage"
-            android:exported="false" />
-
-        <service
-            android:name=".MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+            android:exported="false"
+            android:label="@string/title_activity_Home"
+            android:theme="@style/Theme.User.NoActionBar" />
     </application>
 
 </manifest>

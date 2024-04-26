@@ -1,12 +1,15 @@
 package com.example.user;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,8 +28,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class Profile extends AppCompatActivity  {
+public class Profile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+
+    TextView uname,user;
+    Toolbar toolbar;
     TextView pname,pcontact,paddress,pusername,gender,pcity,pstate,postal,pdob,pocc,field;
     TextView titleName;
     ProgressBar progressBar;
@@ -51,6 +60,26 @@ public class Profile extends AppCompatActivity  {
         titleName=findViewById(R.id.welcome);
         edit=findViewById(R.id.edit);
         progressBar=findViewById(R.id.progressbar);
+
+        drawerLayout = findViewById(R.id.lay_drw);
+        navigationView = findViewById(R.id.view_nav);
+        View headerView = navigationView.getHeaderView(0);
+
+        uname = headerView.findViewById(R.id.fname);
+        user = headerView.findViewById(R.id.fuser);
+
+        toolbar = findViewById(R.id.toolb);
+        setSupportActionBar(toolbar);
+        navigationView.bringToFront();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.setCheckedItem(R.id.n_profile);
+
+
 
         auth=FirebaseAuth.getInstance();
 
@@ -109,6 +138,10 @@ public class Profile extends AppCompatActivity  {
                     pdob.setText(Dob);
                     pocc.setText(Occupation);
                     field.setText(Field);
+
+                    uname.setText(Name);
+                    user.setText(Email);
+
                 }
                 progressBar.setVisibility(View.GONE);
             }
@@ -171,4 +204,44 @@ public class Profile extends AppCompatActivity  {
         });
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int ID = item.getItemId();
+
+        if (ID == R.id.n_home) {
+            Intent intent=new Intent(Profile.this,Homepage.class);
+            startActivity(intent);
+        } else if (ID == R.id.n_no) {
+            Intent intent=new Intent(Profile.this,VNotification.class);
+            startActivity(intent);
+        } else if (ID == R.id.nList) {
+            Intent intent=new Intent(Profile.this, Vlist.class);
+            startActivity(intent);
+        } else if (ID == R.id.onList) {
+            Intent intent=new Intent(Profile.this,organisationuser.class);
+            startActivity(intent);
+        } else if (ID == R.id.n_profile) {
+
+
+        }else if (ID == R.id.leaderboard) {
+            Intent intent = new Intent(Profile.this, leaderboard_activity.class);
+            startActivity(intent);
+        }
+        else if (ID == R.id.n_logout) {
+
+            auth.signOut();
+            Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Profile.this, Start.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            finish();
+
+        } else {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

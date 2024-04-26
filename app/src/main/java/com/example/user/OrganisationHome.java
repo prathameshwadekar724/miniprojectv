@@ -225,7 +225,6 @@ public class OrganisationHome extends AppCompatActivity implements NavigationVie
 
         if (ID == R.id.n_home) {
 
-
         } else if (ID == R.id.n_feed) {
             Intent intent = new Intent(OrganisationHome.this, Post.class);
             startActivity(intent);
@@ -241,13 +240,13 @@ public class OrganisationHome extends AppCompatActivity implements NavigationVie
 
 
         } else if (ID == R.id.nList) {
-            Intent intent=new Intent(OrganisationHome.this,Vlist.class);
+            Intent intent=new Intent(OrganisationHome.this,VolunteerList.class);
             startActivity(intent);
 
         } else if (ID == R.id.onList) {
             Intent intent=new Intent(OrganisationHome.this, Olist.class);
             startActivity(intent);
-        } else if (ID == R.id.n_delete) {
+        } else if (ID == R.id.leaderboard) {
             Intent intent=new Intent(OrganisationHome.this, leaderboard.class);
             startActivity(intent);
         } else if (ID == R.id.n_logout) {

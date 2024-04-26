@@ -149,4 +149,5 @@ public class Information {
     public void setGender(String gender) {
         Gender = gender;
     }
+
 }

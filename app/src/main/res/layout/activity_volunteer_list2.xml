@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/lay_drw"
-    tools:context=".Olist"
+    tools:context=".VolunteerList"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
@@ -24,6 +24,8 @@
             android:id="@+id/progressbar"/>
 
 
+
+
     </RelativeLayout>
 
 
@@ -32,7 +34,7 @@
         android:layout_height="match_parent"
         android:id="@+id/view_nav"
         app:headerLayout="@layout/head_r"
-        app:menu="@menu/main"
+        app:menu="@menu/orgmenu"
         android:layout_gravity="start"/>
 
     <RelativeLayout
@@ -46,6 +48,7 @@
                 android:id="@+id/toolb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:menu="@menu/search"
                 android:background="@color/purple_200"
                 app:titleTextColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"

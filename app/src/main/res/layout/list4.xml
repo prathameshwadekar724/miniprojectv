@@ -73,6 +73,7 @@
                 android:layout_marginTop="15dp"
                 android:text="Ratings:"
                 android:textSize="15dp"
+                android:id="@+id/rate"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
             <RatingBar

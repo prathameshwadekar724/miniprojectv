@@ -65,6 +65,7 @@ public class Display2 extends AppCompatActivity {
                             Msg info=userSnapshot.getValue(Msg.class);
                             if (info.getOrgName().equals(name)){
                                 dataList.add(info);
+
                             }
 
                         }

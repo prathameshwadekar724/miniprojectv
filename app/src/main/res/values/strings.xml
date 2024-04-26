@@ -2,4 +2,16 @@
     <string name="app_name">V-VIBE</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_volunteer_list">Volunteer List</string>
+    <string name="title_activity_leaderboard">Leaderboard</string>
+    <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_orglist">Organisation List</string>
+    <string name="title_activity_Home">Homepage</string>
+    <string name="title_activity_post">Create Post</string>
+    <string name="title_activity_Profile">Profile</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

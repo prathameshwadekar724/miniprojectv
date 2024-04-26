@@ -5,6 +5,8 @@ public class Ratings {
     private String userID, UserKey, name;
     private float rating;
 
+
+
     public Ratings() {
     }
 

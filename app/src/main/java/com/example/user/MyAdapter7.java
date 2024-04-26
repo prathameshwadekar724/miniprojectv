@@ -31,7 +31,6 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
     private ArrayList<Information> data;
     private Context context;
 
-    private ArrayList<Ratings> ratings;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -42,9 +41,8 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         mListener = listener;
     }
 
-    public MyAdapter7(ArrayList<Information> data,ArrayList<Ratings> ratings,Context context) {
+    public MyAdapter7(ArrayList<Information> data,Context context) {
         this.data = data;
-        this.ratings=ratings;
         this.context = context;
     }
 
@@ -64,10 +62,7 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
         FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         String current=firebaseUser.getUid();
         String user=information.getName();
-        holder.getRatings(current,user);
-
-
-
+        //holder.getRatings(user);
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,41 +97,12 @@ public class MyAdapter7 extends RecyclerView.Adapter<MyAdapter7.MyViewHolder7> {
             cardView=itemView.findViewById(R.id.cardview);
             Name=itemView.findViewById(R.id.pName);
             Email=itemView.findViewById(R.id.pEmail);
-            ratingBar=itemView.findViewById(R.id.rating);
+            //ratingBar=itemView.findViewById(R.id.rating);
             button=itemView.findViewById(R.id.submit);
 
 
         }
 
-        public void getRatings(String current,String name) {
-            DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Ratings").child(name);
 
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        if (snapshot.child("rating").getValue() != null) {
-                            float rate = snapshot.child("rating").getValue(Float.class);
-
-                            ratingBar.setRating((float) rate);
-                        } else {
-
-                            ratingBar.setRating(0);
-                        }
-                    }else {
-                        ratingBar.setRating(0);
-                    }
-
-                }
-
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-
-        }
     }
 }

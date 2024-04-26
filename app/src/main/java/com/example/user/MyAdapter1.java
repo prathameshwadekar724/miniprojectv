@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 
@@ -45,8 +52,10 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.MyViewHolder1> {
 
     @Override
     public void onBindViewHolder(@NonNull MyAdapter1.MyViewHolder1 holder,int position) {
+
         holder.Name.setText(data.get(position).getName());
         holder.Email.setText(data.get(position).getEmail());
+
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,5 +87,6 @@ public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.MyViewHolder1> {
             Name=view.findViewById(R.id.rName);
             Email=view.findViewById(R.id.rEmail);
         }
+
     }
 }
